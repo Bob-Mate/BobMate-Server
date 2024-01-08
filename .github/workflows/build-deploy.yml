@@ -26,9 +26,9 @@ jobs:
         run: pwd
         shell: bash
 
-      # - name: add db connection settings
-      #   run: echo "${{ secrets.MYSQL_SETTING }}" > /home/runner/work/Bobmate-Server/bobmate/src/main/resources/application-MYSQL.properties
-      #   shell: bash
+      - name: add db connection settings
+        run: echo "${{ secrets.MYSQL_SETTING }}" > /home/runner/work/BobMate-Server/BobMate-Server/src/main/resources/application-MYSQL.properties
+        shell: bash
 
       - name: Permission for gradlew
         run: chmod +x ./gradlew
