@@ -22,8 +22,8 @@ jobs:
           java-version: 17
           distribution: "corretto"
 
-      - name: Check pwd
-        run: pwd
+      - name: Check directory
+        run: ls -al
         shell: bash
 
       - name: add db connection settings
