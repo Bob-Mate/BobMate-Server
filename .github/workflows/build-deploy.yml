@@ -24,7 +24,7 @@ jobs:
 
       - name: check pwd
         run: pwd
-        shell: pwd
+        shell: bash
 
       - name: Check directory
         run: ls -al
@@ -32,6 +32,10 @@ jobs:
 
       - name: add db connection settings
         run: echo "${{ secrets.MYSQL_SETTING }}" > ./src/main/resources/application-MYSQL.properties
+        shell: bash
+
+      - name: Check directory
+        run: ls -al ./src/main/resources
         shell: bash
 
       - name: Permission for gradlew
