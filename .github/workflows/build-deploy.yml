@@ -22,20 +22,8 @@ jobs:
           java-version: 17
           distribution: "corretto"
 
-      - name: check pwd
-        run: pwd
-        shell: bash
-
-      - name: Check directory
-        run: ls -al
-        shell: bash
-
       - name: add db connection settings
         run: echo "${{ secrets.MYSQL_SETTING }}" > ./src/main/resources/application-MYSQL.properties
-        shell: bash
-
-      - name: Check directory
-        run: ls -al ./src/main/resources
         shell: bash
 
       - name: Permission for gradlew
