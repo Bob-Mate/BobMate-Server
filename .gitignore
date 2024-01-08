@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+## key files
+application-MYSQL.properties
+
 ### STS ###
 .apt_generated
 .classpath
