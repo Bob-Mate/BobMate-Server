@@ -22,12 +22,16 @@ jobs:
           java-version: 17
           distribution: "corretto"
 
+      - name: check pwd
+        run: pwd
+        shell: pwd
+
       - name: Check directory
         run: ls -al
         shell: bash
 
       - name: add db connection settings
-        run: echo "${{ secrets.MYSQL_SETTING }}" > /home/runner/work/BobMate-Server/BobMate-Server/src/main/resources/application-MYSQL.properties
+        run: echo "${{ secrets.MYSQL_SETTING }}" > ./src/main/resources/application-MYSQL.properties
         shell: bash
 
       - name: Permission for gradlew
