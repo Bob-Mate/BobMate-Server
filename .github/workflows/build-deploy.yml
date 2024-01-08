@@ -22,12 +22,21 @@ jobs:
           java-version: 17
           distribution: "corretto"
 
+      - name: Check pwd
+        run: pwd
+        shell: bash
+
+      # - name: add db connection settings
+      #   run: echo "${{ secrets.MYSQL_SETTING }}" > /home/runner/work/Bobmate-Server/bobmate/src/main/resources/application-MYSQL.properties
+      #   shell: bash
+
       - name: Permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
 
       - name: Build with Gradle
         run: ./gradlew build test
+        
       - name: Make Zip File
         run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
