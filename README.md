@@ -1,2 +1,2 @@
 # BobMate-Server
-server repository for 'BobMate'
+server repository for 'BobMate'🍚🍚
