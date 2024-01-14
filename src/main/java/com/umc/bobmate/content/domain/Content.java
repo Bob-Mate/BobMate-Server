@@ -2,11 +2,9 @@ package com.umc.bobmate.content.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import com.umc.bobmate.comment.domain.Comment;
 import com.umc.bobmate.common.BaseEntity;
 import com.umc.bobmate.evaluation.domain.Evaluation;
 import com.umc.bobmate.like.domain.Like;
-import com.umc.bobmate.preference.domain.Preference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,14 +15,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 public class Content extends BaseEntity {
 
