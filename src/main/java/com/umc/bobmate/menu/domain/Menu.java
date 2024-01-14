@@ -1,5 +1,7 @@
 package com.umc.bobmate.menu.domain;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import com.umc.bobmate.common.BaseEntity;
 import com.umc.bobmate.like.domain.Like;
 import jakarta.persistence.Column;
@@ -16,13 +18,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class Menu extends BaseEntity {
 
     @Id
@@ -33,7 +33,6 @@ public class Menu extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NULL")
     private MenuType type;
 
     private String imageUrl;

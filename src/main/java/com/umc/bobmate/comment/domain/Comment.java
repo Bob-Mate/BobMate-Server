@@ -1,5 +1,7 @@
 package com.umc.bobmate.comment.domain;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import com.umc.bobmate.common.BaseEntity;
 import com.umc.bobmate.content.domain.Emotion;
 import com.umc.bobmate.content.domain.Genre;
@@ -8,6 +10,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,13 +20,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class Comment extends BaseEntity {
 
     @Id
@@ -32,16 +33,14 @@ public class Comment extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NULL")
     private Emotion emotion;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NULL")
     private Genre genre;
 
     private String food;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

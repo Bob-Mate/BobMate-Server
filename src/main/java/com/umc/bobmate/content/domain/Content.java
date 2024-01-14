@@ -1,5 +1,7 @@
 package com.umc.bobmate.content.domain;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import com.umc.bobmate.comment.domain.Comment;
 import com.umc.bobmate.common.BaseEntity;
 import com.umc.bobmate.evaluation.domain.Evaluation;
@@ -19,13 +21,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class Content extends BaseEntity {
 
     @Id
@@ -36,15 +36,13 @@ public class Content extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NULL")
     private ContentType type;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NULL")
     private Genre genre;
+    //private List<Genre> genreList;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NULL")
     private Emotion emotion;
 
     private String imageUrl;

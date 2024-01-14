@@ -8,6 +8,7 @@ import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
 public abstract class BaseEntity {
 
     @CreatedDate
@@ -25,7 +27,7 @@ public abstract class BaseEntity {
     private LocalDateTime lastModifiedDate;
 
     @Enumerated(EnumType.STRING)
-    @Setter
-    private BaseEntityStatus status = BaseEntityStatus.ACTIVE;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ACTIVE'")
+    private BaseEntityStatus status;
 
 }

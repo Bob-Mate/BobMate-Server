@@ -1,5 +1,7 @@
 package com.umc.bobmate.like.domain;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import com.umc.bobmate.common.BaseEntity;
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.member.domain.Member;
@@ -8,6 +10,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,13 +20,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class Like extends BaseEntity {
 
     @Id
@@ -32,18 +33,17 @@ public class Like extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NULL")
     private LikeType type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private Content content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
