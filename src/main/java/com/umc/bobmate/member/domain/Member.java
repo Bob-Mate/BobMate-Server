@@ -2,10 +2,7 @@ package com.umc.bobmate.member.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import com.umc.bobmate.comment.domain.Comment;
 import com.umc.bobmate.common.BaseEntity;
-import com.umc.bobmate.evaluation.domain.Evaluation;
-import com.umc.bobmate.like.domain.Like;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -15,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -36,15 +32,6 @@ public class Member extends BaseEntity {
     private String password;
     private String phoneNumber;
     private String imageUrl;
-
-    @OneToMany(mappedBy = "member")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<Like> likes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<Evaluation> evaluations = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(

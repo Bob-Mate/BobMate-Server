@@ -3,7 +3,6 @@ package com.umc.bobmate.menu.domain;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.umc.bobmate.common.BaseEntity;
-import com.umc.bobmate.like.domain.Like;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,9 +10,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,8 +30,5 @@ public class Menu extends BaseEntity {
 
     private String imageUrl;
     private String linkUrl;
-
-    @OneToMany(mappedBy = "menu")
-    private List<Like> likes = new ArrayList<>();
 
 }
