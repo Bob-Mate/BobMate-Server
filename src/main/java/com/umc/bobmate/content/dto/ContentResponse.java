@@ -14,11 +14,11 @@ public class ContentResponse {
     private String linkUrl;
 
 
-    public static Content toEntity(ContentResponse contentResponse) {
-        return Content.builder()
-                .name(contentResponse.getName())
-                .imgUrl(contentResponse.getImgUrl())
-                .linkUrl(contentResponse.getLinkUrl())
+    public static ContentResponse from(Content content){
+        return ContentResponse.builder()
+                .name(content.getName())
+                .imgUrl(content.getImgUrl())
+                .linkUrl(content.getLinkUrl())
                 .build();
     }
 
