@@ -11,21 +11,21 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.umc.bobmate.content.domain.ContentType.*;
 import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest
-@ExtendWith(SpringExtension.class)
-class ContentRepositoryTest {
-    @Autowired
-    ContentRepository contentRepository;
-
-    @Test
-    @DisplayName("테스트 데이터 생성용 코드")
-    void addTestContentData() {
-        String name = "선산";
-        ContentType contentType = VIDEO;
-
-
-        Content.builder()
-
-    }
-}
+//
+//@SpringBootTest
+//@ExtendWith(SpringExtension.class)
+//class ContentRepositoryTest {
+//    @Autowired
+//    ContentRepository contentRepository;
+//
+//    @Test
+//    @DisplayName("테스트 데이터 생성용 코드")
+//    void addTestContentData() {
+//        String name = "선산";
+//        ContentType contentType = VIDEO;
+//
+//
+//        Content.builder()
+//
+//    }
+//}

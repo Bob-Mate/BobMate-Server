@@ -3,14 +3,21 @@ package com.umc.bobmate.content.domain;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.umc.bobmate.common.BaseEntity;
+import com.umc.bobmate.like.domain.Likes;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Builder;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,21 +35,37 @@ public class Content extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ContentType type;
 
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
 
-    @Enumerated(EnumType.STRING)
-    private Emotion emotion;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "Genre",
+            joinColumns = @JoinColumn(name = "contentId")
+    )
+    @Column(name = "genre")
+    private List<String> genreList = new ArrayList<>();
 
-    private String imageUrl;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "Emotion",
+            joinColumns = @JoinColumn(name = "contentId")
+    )
+    @Column(name = "emotion")
+    private List<String> emotionList = new ArrayList<>();
+
+
+//    @Enumerated(EnumType.STRING)
+//    private Genre genre;
+//
+//    @Enumerated(EnumType.STRING)
+//    private Emotion emotion;
+
+    private String imgUrl;
+
     private String linkUrl;
 
-    @Builder
-    public Content(String name, ContentType type, Genre genre, String imageUrl, String linkUrl) {
-        this.name = name;
-        this.type = type;
-        this.genre = genre;
-        this.imageUrl = imageUrl;
-        this.linkUrl = linkUrl;
-    }
+
+    @OneToMany(mappedBy = "content")
+    private List<Likes> likes = new ArrayList<>();
+
 }
