@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 public class Content extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "content_id")
@@ -37,4 +37,12 @@ public class Content extends BaseEntity {
     private String imageUrl;
     private String linkUrl;
 
+    @Builder
+    public Content(String name, ContentType type, Genre genre, String imageUrl, String linkUrl) {
+        this.name = name;
+        this.type = type;
+        this.genre = genre;
+        this.imageUrl = imageUrl;
+        this.linkUrl = linkUrl;
+    }
 }
