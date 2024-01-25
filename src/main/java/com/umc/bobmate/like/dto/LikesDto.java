@@ -21,6 +21,6 @@ public class LikesDto {
     private Menu menu;
 
     public LikesDto(Likes like){
-        id = like.ge
+
     }
 }

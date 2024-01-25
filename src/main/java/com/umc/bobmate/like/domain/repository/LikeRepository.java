@@ -14,7 +14,7 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
     List<Likes> findByMemberId(Long MemberId);
 
 
-    @Query("SELECT ")
+
     @Query("SELECT jjim FROM Likes jjim " +
             "WHERE jjim.member = :member")
     List<Likes> findLikeHistoriesWithMemberAndPostByMember(@Param("member") Member member);
