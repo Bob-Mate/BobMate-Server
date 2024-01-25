@@ -73,4 +73,10 @@ public class Content extends BaseEntity {
     @OneToMany(mappedBy = "content")
     private List<Likes> likes = new ArrayList<>();
 
+    /* 컨텐츠 찜 추가 */
+//    public List<Likes> addLike(Likes like){
+//
+//    }
+
+    /* 컨텐츠 찜 삭제 */
 }

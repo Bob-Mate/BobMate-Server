@@ -41,4 +41,8 @@ public class Member extends BaseEntity {
     @Column(name = "memo")
     private List<String> preferenceList = new ArrayList<>();
 
+
+
+
+
 }

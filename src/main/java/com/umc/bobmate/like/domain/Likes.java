@@ -44,4 +44,10 @@ public class Likes extends BaseEntity {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
+    /* 컨텐츠 찜 추가 */
+
+
+
+    /* 컨텐츠 찜 삭제 */
+
 }

@@ -3,6 +3,8 @@ package com.umc.bobmate.content.domain.repository;
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.ContentType;
 import java.util.List;
+
+import com.umc.bobmate.content.dto.ContentRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,4 +25,17 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     //            "GROUP BY c.id " +
     //            "ORDER BY COUNT(c.likes) DESC")
     //    List<Content> findTop3ContentsByLikes();
+
+    List<Content> findRecommendComponents
+            (String emotion, String contentType, String genre);
+
+    // emotion을 통한 필터링
+    List<Content> findByEmotion(@Param("emotion") String emotion, @Param("size") int size);
+
+    // ContentType을 통한 필터링
+    List<Content> findByType(@Param("type") ContentType type, @Param("emotion") String emotion, @Param("size") int size);
+
+    // 누구와 보는지에 따른 연령 필터링
+    List<Content> findByWithWhom(@Param("withWhom") String withWhom);
+
 }

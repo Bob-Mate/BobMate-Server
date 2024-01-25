@@ -1,9 +1,15 @@
 package com.umc.bobmate.content.controller;
 
+import com.umc.bobmate.content.domain.Emotion;
+import com.umc.bobmate.content.dto.ContentRequest;
 import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.content.service.ContentService;
 import java.util.List;
+
+import com.umc.bobmate.like.dto.LikesDto;
+import com.umc.bobmate.member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class ContentController {
     private final ContentService contentService;
-
 
     @GetMapping("")
     public ApiResponse<List<ContentResponse>> getAllContents(@RequestParam(name = "section") int section) {
@@ -42,5 +47,31 @@ public class ContentController {
     //    public ApiResponse<List<ContentResponse>> getTop3TextContents() {
     //        return ApiResponse.onSuccess(contentService.getAllTextContents());
     //    }
+
+    /* 컨텐츠 추천 결과 */
+    @GetMapping("/recommend/result")
+    public List<ContentResponse> recommendContents(ContentRequest dto){
+        String contentAge = dto.getWithWhom();
+        String type = dto.getContentType();
+        String emotion = dto.getEmotion();
+        return null;
+        }
+
+
+//        return contentService.recommendContents(dto);
+    /* 컨텐츠 찜 목록 */
+    @GetMapping("/like")
+    public List<LikesDto> findLikePosts(@RequestParam("memberId") String memberId) {
+//        Long l = Long.parseLong(memberId);
+//        // memberId에 해당하는 Member를 찾음
+//        Member member = memberService.findById(l);
+//
+//        if (member != null) {
+//            // LikeHistoryRepository를 통해 해당 Member가 좋아요한 모든 게시물 조회
+//            return likeHistoryService.findByMemberLike(member).stream().map(LikePostDto::new).collect(Collectors.toList());
+//
+//        }
+        return null;
+    }
 
 }
