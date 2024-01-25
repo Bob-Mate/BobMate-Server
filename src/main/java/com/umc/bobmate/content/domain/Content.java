@@ -18,11 +18,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
+@DynamicInsert
 @NoArgsConstructor(access = PROTECTED)
 public class Content extends BaseEntity {
     @Id
@@ -53,13 +57,6 @@ public class Content extends BaseEntity {
     @Column(name = "emotion")
     private List<String> emotionList = new ArrayList<>();
 
-
-//    @Enumerated(EnumType.STRING)
-//    private Genre genre;
-//
-//    @Enumerated(EnumType.STRING)
-//    private Emotion emotion;
-
     private String imgUrl;
 
     private String linkUrl;
@@ -68,4 +65,13 @@ public class Content extends BaseEntity {
     @OneToMany(mappedBy = "content")
     private List<Likes> likes = new ArrayList<>();
 
+    @Builder
+    public Content(String name, ContentType contentType, List<String> genreList, List<String> emotionList, String imgUrl, String linkUrl) {
+        this.name = name;
+        this.type = contentType;
+        this.genreList = genreList;
+        this.emotionList = emotionList;
+        this.imgUrl = imgUrl;
+        this.linkUrl = linkUrl;
+    }
 }
