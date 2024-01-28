@@ -1,5 +1,6 @@
 package com.umc.bobmate.login.jwt.util;
 
+import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+
+import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus.EXPIRED_TOKEN;
 
 @Component
 public class JwtTokenProvider {
@@ -43,7 +46,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(accessToken)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            return e.getClaims();
+            throw new GeneralException(EXPIRED_TOKEN);
         }
     }
 }

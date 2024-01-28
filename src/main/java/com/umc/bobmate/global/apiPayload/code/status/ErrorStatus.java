@@ -18,7 +18,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // member
-    INVALID_MEMBER_ID(BAD_REQUEST, "MEMBER4001", "유효하지 않은 멤버의 아이디입니다.");
+    INVALID_MEMBER_ID(BAD_REQUEST, "MEMBER4001", "유효하지 않은 멤버의 아이디입니다."),
+    
+    // login
+    EXPIRED_TOKEN(BAD_REQUEST, "LOGIN4001", "만료된 토큰입니다. 토큰을 다시 발급하세요.");
 
     private final HttpStatus httpStatus;
     private final String code;
