@@ -30,6 +30,10 @@ jobs:
         run: echo "${{ secrets.LOGIN_SETTING }}" > ./src/main/resources/application-LOGIN.properties
         shell: bash
 
+      - name: add s3 settings
+        run: echo "${{ secrets.S3_SETTING }}" > ./src/main/resources/application-S3.properties
+        shell: bash
+
       - name: Permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
