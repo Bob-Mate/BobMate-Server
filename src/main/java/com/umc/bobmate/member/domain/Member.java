@@ -1,18 +1,17 @@
 package com.umc.bobmate.member.domain;
 
-import static jakarta.persistence.EnumType.*;
-import static lombok.AccessLevel.PROTECTED;
-
 import com.umc.bobmate.common.BaseEntity;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.EnumType.STRING;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -49,10 +48,19 @@ public class Member extends BaseEntity {
     private List<String> preferenceList = new ArrayList<>();
 
     @Builder
-    public Member(String name, String socialId, String imageUrl, OAuthProvider oAuthProvider) {
+    public Member(
+            final String name,
+            final String socialId,
+            final String imageUrl,
+            final OAuthProvider oAuthProvider
+    ) {
         this.name = name;
         this.socialId = socialId;
         this.imageUrl = imageUrl;
         this.oAuthProvider = oAuthProvider;
+    }
+
+    public void modifyPreference(final List<String> preferenceList) {
+        this.preferenceList = preferenceList;
     }
 }
