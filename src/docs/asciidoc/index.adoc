@@ -7,7 +7,11 @@
 :sectlinks:
 :docinfo: shared-head
 
-== Http Status Code
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Http Status Code
 
 |===
 | Status code | Usage
@@ -28,6 +32,7 @@
 | `404 Not Found`
 | The requested resource did not exist
 |===
+
 
 = Member
 == `GET` 선호도 조회 API
