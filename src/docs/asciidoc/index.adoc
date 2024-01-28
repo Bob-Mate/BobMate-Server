@@ -1,0 +1,79 @@
+= BobMate API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlishtjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:docinfo: shared-head
+
+== Http Status Code
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+= Member
+== `GET` 선호도 조회 API
+=== Request
+
+include::{snippets}/get-preferences/http-request.adoc[]
+include::{snippets}/get-preferences/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/get-preferences/response-body.adoc[]
+include::{snippets}/get-preferences/response-fields.adoc[]
+
+== `POST` 선호도 수정 API
+=== Request
+
+include::{snippets}/modify-preferences/http-request.adoc[]
+include::{snippets}/modify-preferences/request-headers.adoc[]
+include::{snippets}/modify-preferences/request-body.adoc[]
+include::{snippets}/modify-preferences/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/modify-preferences/response-body.adoc[]
+include::{snippets}/modify-preferences/response-fields.adoc[]
+
+== `GET` 코멘트 조회 API
+=== Request
+
+include::{snippets}/get-comments/http-request.adoc[]
+include::{snippets}/get-comments/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/get-comments/response-body.adoc[]
+include::{snippets}/get-comments/response-fields.adoc[]
+
+== `POST` 코멘트 수정 API
+=== Request
+
+include::{snippets}/modify-comment/http-request.adoc[]
+include::{snippets}/modify-comment/request-headers.adoc[]
+include::{snippets}/modify-comment/request-body.adoc[]
+include::{snippets}/modify-comment/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/modify-comment/response-body.adoc[]
+include::{snippets}/modify-comment/response-fields.adoc[]

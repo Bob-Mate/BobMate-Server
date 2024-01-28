@@ -60,6 +60,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = GeneralException.class)
     public ResponseEntity onThrowException(GeneralException generalException, HttpServletRequest request) {
         ErrorReasonDto errorReasonHttpStatus = generalException.getErrorReasonHttpStatus();
+        generalException.printStackTrace();
         return handleExceptionInternal(generalException, errorReasonHttpStatus, null, request);
     }
 
@@ -67,7 +68,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
                                                            HttpHeaders headers, HttpServletRequest request) {
 
         ApiResponse<Object> body = ApiResponse.onFailure(reason.getCode(), reason.getMessage(), null);
-//        e.printStackTrace();
+        e.printStackTrace();
 
         WebRequest webRequest = new ServletWebRequest(request);
         return super.handleExceptionInternal(
