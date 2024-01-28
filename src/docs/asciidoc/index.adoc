@@ -47,8 +47,33 @@ include::{snippets}/get-preferences/response-fields.adoc[]
 include::{snippets}/modify-preferences/http-request.adoc[]
 include::{snippets}/modify-preferences/request-headers.adoc[]
 include::{snippets}/modify-preferences/request-body.adoc[]
+include::{snippets}/modify-preferences/request-fields.adoc[]
 
 === Response
 
 include::{snippets}/modify-preferences/response-body.adoc[]
 include::{snippets}/modify-preferences/response-fields.adoc[]
+
+== `GET` 코멘트 조회 API
+=== Request
+
+include::{snippets}/get-comments/http-request.adoc[]
+include::{snippets}/get-comments/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/get-comments/response-body.adoc[]
+include::{snippets}/get-comments/response-fields.adoc[]
+
+== `POST` 코멘트 수정 API
+=== Request
+
+include::{snippets}/modify-comment/http-request.adoc[]
+include::{snippets}/modify-comment/request-headers.adoc[]
+include::{snippets}/modify-comment/request-body.adoc[]
+include::{snippets}/modify-comment/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/modify-comment/response-body.adoc[]
+include::{snippets}/modify-comment/response-fields.adoc[]

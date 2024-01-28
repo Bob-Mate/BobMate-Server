@@ -1,6 +1,9 @@
 package com.umc.bobmate.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.umc.bobmate.content.domain.Emotion;
+import com.umc.bobmate.content.domain.Genre;
+import com.umc.bobmate.member.dto.request.CommentUploadRequest;
 import com.umc.bobmate.member.dto.request.PreferenceUploadRequest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,8 +33,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -86,7 +88,7 @@ class MemberControllerTest {
 
     @Test
     @Transactional
-    @DisplayName("선호도 조회 Test")
+    @DisplayName("선호도 저장 Test")
     void modifyPreference() throws Exception {
         final PreferenceUploadRequest preferenceUploadRequest = new PreferenceUploadRequest();
         final ArrayList<String> list = new ArrayList<>();
@@ -111,6 +113,9 @@ class MemberControllerTest {
                         requestHeaders(
                                 headerWithName("Authorization").description("Basic auth credentials")
                         ),
+                        requestFields(
+                                fieldWithPath("preferenceList").type(ARRAY).description("변경할 선호도 리스트")
+                        ),
                         responseFields(
                                 fieldWithPath("isSuccess").type(BOOLEAN).description("성공 여부"),
                                 fieldWithPath("code").type(STRING).description("결과 코드"),
@@ -118,4 +123,72 @@ class MemberControllerTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("코멘트 조회 Test")
+    void getComment() throws Exception {
+        this.mockMvc.perform(
+                        get("/api/v1/members/comment")
+                                .header("Authorization", accessToken)
+                                .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("get-comments",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("Basic auth credentials")
+                        ),
+                        responseFields(
+                                fieldWithPath("isSuccess").type(BOOLEAN).description("성공 여부"),
+                                fieldWithPath("code").type(STRING).description("결과 코드"),
+                                fieldWithPath("message").type(STRING).description("결과 메세지"),
+                                fieldWithPath("result").type(OBJECT).description("결과 데이터"),
+                                fieldWithPath("result.emotion").type(STRING).description("감정: 현재 입력된 코멘트가 없으면 null이 반환됨."),
+                                fieldWithPath("result.food").type(STRING).description("음식: 현재 입력된 코멘트가 없으면 null이 반환됨."),
+                                fieldWithPath("result.genre").type(STRING).description("장르: 현재 입력된 코멘트가 없으면 null이 반환됨.")
+                        )
+                ));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("코멘트 수정 Test")
+    void modifyComment() throws Exception {
+        final CommentUploadRequest commentUploadRequest = new CommentUploadRequest();
+        commentUploadRequest.setEmotion(Emotion.ANGRY);
+        commentUploadRequest.setFood("피자");
+        commentUploadRequest.setGenre(Genre.ANIMATION);
+
+        String content = objectMapper.writeValueAsString(commentUploadRequest);
+
+        this.mockMvc.perform(
+                        post("/api/v1/members/comment")
+                                .header("Authorization", accessToken)
+                                .contentType(APPLICATION_JSON)
+                                .characterEncoding("UTF-8")
+                                .accept(APPLICATION_JSON)
+                                .content(content)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("modify-comment",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("Basic auth credentials")
+                        ),
+                        requestFields(
+                                fieldWithPath("food").type(STRING).description("음식"),
+                                fieldWithPath("emotion").type(STRING).description("감정: GLAD, EXCITED, GLOOMY, ANGRY, SAD 만 전달 가능."),
+                                fieldWithPath("genre").type(STRING).description("장르: DRAMA, MOVIE, ANIMATION, MYSTERY, COMIC, COMEDY, ROMANCE, ACTION, THRILLER, CRIME, FANTASY, HIGHTEEN, FAMILY 만 전달 가능")
+                        ),
+                        responseFields(
+                                fieldWithPath("isSuccess").type(BOOLEAN).description("성공 여부"),
+                                fieldWithPath("code").type(STRING).description("결과 코드"),
+                                fieldWithPath("message").type(STRING).description("결과 메세지")
+                        )
+                ));
+    }
+
+
 }

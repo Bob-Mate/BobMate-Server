@@ -47,7 +47,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void saveComment(CommentUploadRequest uploadRequest) {
+    public void saveComment(final CommentUploadRequest uploadRequest) {
         final Member loginMember = authTokensGenerator.getLoginMember();
 
         final Comment comment = Comment.builder()
