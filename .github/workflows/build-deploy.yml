@@ -2,7 +2,7 @@ name: Build and Deploy Spring Boot to AWS EC2
 
 on:
   push:
-    branches: ["main"]
+    branches: ["develop"]
 
 env:
   PROJECT_NAME: bobmate
