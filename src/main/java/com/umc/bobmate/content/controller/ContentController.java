@@ -1,9 +1,11 @@
 package com.umc.bobmate.content.controller;
 
+import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
 import static com.umc.bobmate.global.apiPayload.code.status.SuccessStatus._OK;
 
 import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.content.service.ContentService;
+import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,8 +40,7 @@ public class ContentController {
         } else if (section == 1) { // 1: TEXT
             return ApiResponse.onSuccess(contentService.getTop3ContentsByLikes(ContentType.TEXT));
         } else {
-            System.out.println("섹션값 오류");
-            throw new IllegalArgumentException("Invalid");
+            throw new GeneralException(_BAD_REQUEST);
         }
     }
 
@@ -47,21 +48,30 @@ public class ContentController {
     @Operation(summary = "콘텐츠 찜 누르기", description = "콘텐츠에 찜을 누릅니다.")
     @Parameter(name = "memberId", description = "회원 ID")
     @Parameter(name = "contentId", description = "콘텐츠 ID")
-    public ApiResponse<Void> likeContent(@RequestParam("memberId") Long memberId, @RequestParam("contentId") Long contentId) {
-        likeService.likeContent(memberId, contentId);
-        return ApiResponse.of(_OK);
+    public ApiResponse<Void> likeContent(@RequestParam("memberId") Long memberId,
+                                         @RequestParam("contentId") Long contentId) {
+        try {
+            likeService.likeContent(memberId, contentId);
+            return ApiResponse.of(_OK);
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
     }
 
     @PostMapping("/unlike")
     @Operation(summary = "콘텐츠 찜 취소", description = "콘텐츠에 찜을 취소합니다.")
     @Parameter(name = "memberId", description = "회원 ID")
     @Parameter(name = "contentId", description = "콘텐츠 ID")
-    public ApiResponse<Void> unlikeContent(@RequestParam("memberId") Long memberId, @RequestParam("contentId") Long contentId) {
-        likeService.unlikeContent(memberId, contentId);
-        return ApiResponse.of(_OK);
+    public ApiResponse<Void> unlikeContent(@RequestParam("memberId") Long memberId,
+                                           @RequestParam("contentId") Long contentId) {
+        try {
+            likeService.unlikeContent(memberId, contentId);
+            return ApiResponse.of(_OK);
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
+
     }
-
-
 
 //    @GetMapping("/video")
 //    public ApiResponse<List<ContentResponse>> getTop3VideoContents() {

@@ -1,8 +1,10 @@
 package com.umc.bobmate.menu.controller;
 
+import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
 import static com.umc.bobmate.global.apiPayload.code.status.SuccessStatus._OK;
 
 import com.umc.bobmate.global.apiPayload.ApiResponse;
+import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.service.LikeService;
 import com.umc.bobmate.menu.dto.MenuResponse;
 import com.umc.bobmate.menu.service.MenuService;
@@ -36,17 +38,26 @@ public class MenuController {
     @Parameter(name = "memberId", description = "회원 ID")
     @Parameter(name = "menuId", description = "메뉴 ID")
     public ApiResponse<Void> likeMenu(@RequestParam("memberId") Long memberId, @RequestParam("menuId") Long menuId) {
-        likeService.likeMenu(memberId, menuId);
-        return ApiResponse.of(_OK);
+        try {
+            likeService.likeMenu(memberId, menuId);
+            return ApiResponse.of(_OK);
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
     }
 
     @PostMapping("/unlike")
     @Operation(summary = "메뉴 찜 취소", description = "메뉴에 찜을 취소합니다.")
     @Parameter(name = "memberId", description = "회원 ID")
     @Parameter(name = "menuId", description = "메뉴 ID")
-    public ApiResponse<Void> unlikeContent(@RequestParam("memberId") Long memberId, @RequestParam("menuId") Long menuId) {
-        likeService.unlikeMenu(memberId, menuId);
-        return ApiResponse.of(_OK);
+    public ApiResponse<Void> unlikeMenu(@RequestParam("memberId") Long memberId,
+                                        @RequestParam("menuId") Long menuId) {
+        try {
+            likeService.unlikeMenu(memberId, menuId);
+            return ApiResponse.of(_OK);
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
     }
 
 }

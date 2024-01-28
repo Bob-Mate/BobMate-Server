@@ -1,7 +1,10 @@
 package com.umc.bobmate.like.controller;
 
+import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
+
 import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.global.apiPayload.ApiResponse;
+import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.service.LikeService;
 import com.umc.bobmate.menu.dto.MenuResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,14 +28,22 @@ public class LikeController {
     @Operation(summary = "내가 찜한 콘텐츠", description = "사용자가 찜을 누른 콘텐츠 목록을 조회합니다.")
     @Parameter(name = "memberId", description = "사용자 ID")
     public ApiResponse<List<ContentResponse>> getLikedContents(@PathVariable("memberId") Long memberId) {
-        return ApiResponse.onSuccess(likeService.getLikedContents(memberId));
+        try {
+            return ApiResponse.onSuccess(likeService.getLikedContents(memberId));
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
     }
 
     @GetMapping("/menu/{memberId}")
     @Operation(summary = "내가 찜한 메뉴", description = "사용자가 찜을 누른 메뉴 목록을 조회합니다.")
     @Parameter(name = "memberId", description = "사용자 ID")
     public ApiResponse<List<MenuResponse>> getLikedMenus(@PathVariable("memberId") Long memberId) {
-        return ApiResponse.onSuccess(likeService.getLikedMenus(memberId));
+        try {
+            return ApiResponse.onSuccess(likeService.getLikedMenus(memberId));
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
     }
 
 }
