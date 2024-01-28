@@ -7,6 +7,7 @@ build/
 
 ## key files
 application-MYSQL.properties
+application-LOGIN.properties
 
 ### STS ###
 .apt_generated
