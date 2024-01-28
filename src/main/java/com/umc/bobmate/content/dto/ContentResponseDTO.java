@@ -1,6 +1,5 @@
 package com.umc.bobmate.content.dto;
 
-import com.umc.bobmate.content.domain.Content;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ContentResponse {
+public class ContentResponseDTO {
 
     private Long contentId;
     private String name;

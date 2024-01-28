@@ -73,10 +73,18 @@ public class Content extends BaseEntity {
     @OneToMany(mappedBy = "content")
     private List<Likes> likes = new ArrayList<>();
 
-    /* 컨텐츠 찜 추가 */
-//    public List<Likes> addLike(Likes like){
-//
-//    }
+    @Builder
+    public Content(String name, ContentType contentType, List<String> genreList, List<String> emotionList, String imgUrl, String linkUrl) {
+        this.name = name;
+        this.type = contentType;
+        this.genreList = genreList;
+        this.emotionList = emotionList;
+        this.imgUrl = imgUrl;
+        this.linkUrl = linkUrl;
+    }
 
-    /* 컨텐츠 찜 삭제 */
+
+
+
+
 }

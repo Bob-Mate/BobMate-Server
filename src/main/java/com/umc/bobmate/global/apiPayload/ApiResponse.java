@@ -3,10 +3,8 @@ package com.umc.bobmate.global.apiPayload;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.global.apiPayload.code.BaseCode;
 import com.umc.bobmate.global.apiPayload.code.status.SuccessStatus;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

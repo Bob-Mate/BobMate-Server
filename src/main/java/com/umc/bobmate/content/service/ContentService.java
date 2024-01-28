@@ -2,8 +2,8 @@ package com.umc.bobmate.content.service;
 
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.ContentType;
-import com.umc.bobmate.content.dto.ContentRequest;
-import com.umc.bobmate.content.dto.ContentResponse;
+import com.umc.bobmate.content.dto.ContentRequestDTO;
+import com.umc.bobmate.content.dto.ContentResponseDTO;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,11 +16,36 @@ import org.springframework.stereotype.Service;
 public class ContentService {
     private final ContentRepository contentRepository;
 
-    public List<ContentResponse> getTop3Contents(ContentType contentType) {
+    public List<ContentResponseDTO> getTop3Contents(ContentType contentType) {
         return contentRepository.findTop3ContentsByLikesAndType(contentType).stream()
-                .map(content -> ContentResponse.builder().contentId(content.getId()).name(content.getName())
+                .map(content -> ContentResponseDTO.builder().contentId(content.getId()).name(content.getName())
                         .imgUrl(content.getImgUrl()).linkUrl(content.getLinkUrl()).build())
                 .collect(Collectors.toList());
+    }
+
+    public List<Content> recommendContents(String emotion, String withWhom, String contentType) {
+        ContentType contentTypeEnum = ContentType.valueOf(contentType.toUpperCase());
+        List<Content> recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, emotion);
+
+        // DRAMA, MOVIE, ANIMATION, MYSTERY, COMIC,
+        //    COMEDY, ROMANCE, ACTION, THRILLER, CRIME, FANTASY,
+        //    HIGHTEEN, FAMILY;
+
+//        GLAD, EXCITED, GLOOMY, ANGRY, SAD;
+
+        if ("GLAD".equals(emotion)) {
+            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "GLAD");
+        } else if ("joy".equals(emotion)) {
+            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "모험");
+        } else if ("sad".equals(emotion)) {
+            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "드라마");
+        } else {
+            // 그 외의 감정에 대한 처리
+            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "기본 장르");
+        }
+
+
+        return recommendedContents;
     }
 
 
@@ -38,20 +63,20 @@ public class ContentService {
 //                        .imgUrl(text.getImgUrl()).linkUrl(text.getLinkUrl()).build()).collect(Collectors.toList());
 //    }
 
-    public List<ContentResponse> recommendContents(ContentRequest dto) {
+//    public List<ContentResponseDTO> recommendContents(ContentRequestDTO dto) {
+//
+//        contentRepository.findByEmotion(dto.getEmotion(), 3);
+//
+////        return recommendedContents.stream()
+////                .map(this::convertToDTO)
+////                .collect(Collectors.toList());
+//
+//        return null;
+//    }
 
-        contentRepository.findByEmotion(dto.getEmotion(), 3);
 
-//        return recommendedContents.stream()
-//                .map(this::convertToDTO)
-//                .collect(Collectors.toList());
-
-        return null;
-    }
-
-
-    private ContentResponse convertToDTO(Content content) {
-        return ContentResponse.builder()
+    private ContentResponseDTO convertToDTO(Content content) {
+        return ContentResponseDTO.builder()
                 .contentId(content.getId())
                 .name(content.getName())
                 .type(content.getType().name()) // Enum 타입을 문자열로 변환
