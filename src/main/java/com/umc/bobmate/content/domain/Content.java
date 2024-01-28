@@ -62,8 +62,19 @@ public class Content extends BaseEntity {
     private String linkUrl;
 
 
+    // 좋아요 개수
+    @Column(name = "likes_count")
+    private Long likesCount;
+
+
+    public void setLikesCount(long likesCount) {
+        this.likesCount = likesCount;
+    }
+
+
     @OneToMany(mappedBy = "content")
     private List<Likes> likes = new ArrayList<>();
+
 
     @Builder
     public Content(String name, ContentType contentType, List<String> genreList, List<String> emotionList, String imgUrl, String linkUrl) {

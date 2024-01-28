@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContentRepositoryTest {
     @Autowired
     ContentRepository contentRepository;
-
+//
 //    @Test
 //    @DisplayName("테스트 데이터 생성용 코드")
 //    void addTestContentData() {

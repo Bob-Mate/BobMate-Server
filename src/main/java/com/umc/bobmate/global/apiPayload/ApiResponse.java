@@ -3,10 +3,8 @@ package com.umc.bobmate.global.apiPayload;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.global.apiPayload.code.BaseCode;
 import com.umc.bobmate.global.apiPayload.code.status.SuccessStatus;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -25,6 +23,10 @@ public class ApiResponse<T> {
     // success
     public static <T> ApiResponse<T> onSuccess(T result) {
         return new ApiResponse<>(true, SuccessStatus._OK.getCode(), SuccessStatus._OK.getMessage(), result);
+    }
+
+    public static <T> ApiResponse<T> of(BaseCode code) {
+        return new ApiResponse<>(true, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), null);
     }
 
     public static <T> ApiResponse<T> of(BaseCode code, T result) {

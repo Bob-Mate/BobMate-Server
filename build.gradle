@@ -1,80 +1,82 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.1'
-	id 'io.spring.dependency-management' version '1.1.4'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.umc'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	asciidoctorExt
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    asciidoctorExt
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'javax.validation:validation-api:2.0.1.Final'
-	implementation 'org.projectlombok:lombok:1.18.28'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.projectlombok:lombok:1.18.28'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
 
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 ext {
-	snippetsDir = file('build/generated-snippets')
+    snippetsDir = file('build/generated-snippets')
 }
 
 test {
-	outputs.dir snippetsDir
+    outputs.dir snippetsDir
 }
 
 bootJar {
-	dependsOn asciidoctor
-	copy {
-		from "${asciidoctor.outputDir}"
-		into 'BOOT-INF/classes/static/docs'
-	}
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
 }
 
 asciidoctor {
-	dependsOn test
-	inputs.dir snippetsDir
+    dependsOn test
+    inputs.dir snippetsDir
 }
 
 asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
+    delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	from file("build/docs/asciidoc")
-	into file("src/main/resources/static/docs")
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
 }
 
 build {
-	dependsOn copyDocument
+    dependsOn copyDocument
 }
