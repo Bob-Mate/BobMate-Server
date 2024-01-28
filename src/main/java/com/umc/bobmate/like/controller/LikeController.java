@@ -23,6 +23,16 @@ public class LikeController {
     private final MenuRepository menuRepository;
 
     private Member member;
+    private LikeService likesService;
+//    @GetMapping("/{memberId}")
+// public List<LikesDTO> getLikesByMemberId(@PathVariable Long memberId) {
+//        return likesService.getLikesByMemberId(memberId);
+//    }
+//
+//    @PostMapping("/add")
+//    public void addLike(@RequestBody LikesDTO likesDTO) {
+//        likesService.addLike(likesDTO);
+//    }
 
 
 
