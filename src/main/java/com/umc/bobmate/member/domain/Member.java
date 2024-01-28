@@ -63,4 +63,16 @@ public class Member extends BaseEntity {
     public void modifyPreference(final List<String> preferenceList) {
         this.preferenceList = preferenceList;
     }
+
+    public void modifyName(final String name) {
+        this.name = name;
+    }
+
+    public void deleteProfileImage() {
+        this.imageUrl = null;
+    }
+
+    public void modifyProfileImage(String imgUrl) {
+        this.imageUrl = imgUrl;
+    }
 }

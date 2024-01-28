@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.bobmate.content.domain.Emotion;
 import com.umc.bobmate.content.domain.Genre;
 import com.umc.bobmate.member.dto.request.CommentUploadRequest;
+import com.umc.bobmate.member.dto.request.EditRequest;
 import com.umc.bobmate.member.dto.request.PreferenceUploadRequest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,18 +25,23 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import static com.umc.bobmate.ApiDocumentUtils.getDocumentRequest;
 import static com.umc.bobmate.ApiDocumentUtils.getDocumentResponse;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -190,6 +197,93 @@ class MemberControllerTest {
                                 fieldWithPath("message").type(STRING).description("결과 메세지")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("프로필 조회 Test")
+    void getProfile() throws Exception {
+        this.mockMvc.perform(
+                        get("/api/v1/members/edit")
+                                .header("Authorization", accessToken)
+                                .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("get-profile",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("Basic auth credentials")
+                        ),
+                        responseFields(
+                                fieldWithPath("isSuccess").type(BOOLEAN).description("성공 여부"),
+                                fieldWithPath("code").type(STRING).description("결과 코드"),
+                                fieldWithPath("message").type(STRING).description("결과 메세지"),
+                                fieldWithPath("result").type(OBJECT).description("결과 데이터"),
+                                fieldWithPath("result.profileImage").type(STRING).description("유저 프로필 이미지"),
+                                fieldWithPath("result.nickname").type(STRING).description("유저 닉네임")
+                        )
+                ));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("프로필 수정 API 테스트")
+    void modifyProfile() throws Exception {
+        final String fileName = "logo";
+        final String fileType = "svg";
+
+        final FileInputStream fileInputStream
+                = new FileInputStream("src/test/resources/static/" + fileName + "." + fileType);
+        final MockMultipartFile postImage = new MockMultipartFile(
+                "profileImage",
+                fileName + "." + fileType,
+                "multipart/form-data",
+                fileInputStream
+        );
+
+        final EditRequest editRequest = new EditRequest("이름 수정 테스트");
+
+        final String content = objectMapper.writeValueAsString(editRequest);
+        final MockMultipartFile request
+                = new MockMultipartFile(
+                "request",
+                "request",
+                "application/json",
+                content.getBytes(UTF_8)
+        );
+
+        this.mockMvc.perform(
+                        multipart("/api/v1/members/edit")
+                                .file(postImage)
+                                .file(request)
+                                .header("Authorization", accessToken)
+                ).andExpect(status().isOk())
+                .andDo(
+                        document("edit-profile",
+                                getDocumentRequest(),
+                                getDocumentResponse(),
+                                requestHeaders(
+                                        headerWithName("Authorization").description("Basic auth credentials")
+                                ),
+                                requestParts(
+                                        partWithName("profileImage").description("업로드 할 프로필 이미지 파일 : 빈 파일 전달 시 삭제 처리 함"),
+                                        partWithName("request").description("프로필 업로드 DTO")
+                                ),
+                                requestPartFields(
+                                        "request",
+                                        fieldWithPath("name").type(STRING)
+                                                .description(
+                                                        "`request.name` : 바꿀 닉네임 정보. 빈 값 전달이 불가능합니다."
+                                                )
+                                ),
+                                responseFields(
+                                        fieldWithPath("isSuccess").type(BOOLEAN).description("성공 여부"),
+                                        fieldWithPath("code").type(STRING).description("결과 코드"),
+                                        fieldWithPath("message").type(STRING).description("결과 메세지")
+                                )
+
+                        )
+                );
     }
 
 

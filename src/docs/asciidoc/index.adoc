@@ -33,36 +33,53 @@ endif::[]
 | The requested resource did not exist
 |===
 
-
 = Member
 == `GET` 선호도 조회 API
 === Request
 
 include::{snippets}/get-preferences/http-request.adoc[]
+
+- request headers
 include::{snippets}/get-preferences/request-headers.adoc[]
 
 === Response
 
+- response body
 include::{snippets}/get-preferences/response-body.adoc[]
+
+- response body - fields
 include::{snippets}/get-preferences/response-fields.adoc[]
 
 == `POST` 선호도 수정 API
+
 === Request
 
 include::{snippets}/modify-preferences/http-request.adoc[]
+
+- request headers
 include::{snippets}/modify-preferences/request-headers.adoc[]
+
+- request body
 include::{snippets}/modify-preferences/request-body.adoc[]
+
+- request body - fields
 include::{snippets}/modify-preferences/request-fields.adoc[]
 
 === Response
 
+- response body
 include::{snippets}/modify-preferences/response-body.adoc[]
+
+- response fields
 include::{snippets}/modify-preferences/response-fields.adoc[]
 
 == `GET` 코멘트 조회 API
+
 === Request
 
 include::{snippets}/get-comments/http-request.adoc[]
+
+- request headers
 include::{snippets}/get-comments/request-headers.adoc[]
 
 === Response
@@ -71,14 +88,60 @@ include::{snippets}/get-comments/response-body.adoc[]
 include::{snippets}/get-comments/response-fields.adoc[]
 
 == `POST` 코멘트 수정 API
+
 === Request
 
 include::{snippets}/modify-comment/http-request.adoc[]
+
+- request headers
 include::{snippets}/modify-comment/request-headers.adoc[]
+
+- request body
 include::{snippets}/modify-comment/request-body.adoc[]
+
+- request body - fields
 include::{snippets}/modify-comment/request-fields.adoc[]
 
 === Response
 
+- response body
 include::{snippets}/modify-comment/response-body.adoc[]
+
+- response fields
+include::{snippets}/modify-comment/response-fields.adoc[]
+
+== `GET` 프로필 수정 페이지 조회 API
+
+=== Request
+
+include::{snippets}/get-profile/http-request.adoc[]
+- request header
+include::{snippets}/get-profile/request-headers.adoc[]
+
+=== Response
+
+- response body
+include::{snippets}/get-profile/response-body.adoc[]
+
+- response fields
+include::{snippets}/get-profile/response-fields.adoc[]
+
+== `POST` 프로필 수정 API
+
+=== Request
+
+include::{snippets}/edit-profile/httpie-request.adoc[]
+- header
+include::{snippets}/edit-profile/request-headers.adoc[]
+- request part
+include::{snippets}/edit-profile/request-parts.adoc[]
+- request part - fields
+include::{snippets}/edit-profile/request-part-request-fields.adoc[]
+
+=== Response
+
+- response body
+include::{snippets}/modify-comment/response-body.adoc[]
+
+- response fields
 include::{snippets}/modify-comment/response-fields.adoc[]

@@ -21,7 +21,13 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_MEMBER_ID(BAD_REQUEST, "MEMBER4001", "유효하지 않은 멤버의 아이디입니다."),
     
     // login
-    EXPIRED_TOKEN(BAD_REQUEST, "LOGIN4001", "만료된 토큰입니다. 토큰을 다시 발급하세요.");
+    EXPIRED_TOKEN(BAD_REQUEST, "LOGIN4001", "만료된 토큰입니다. 토큰을 다시 발급하세요."),
+
+    // image
+    CONVERT_FILE_ERROR(INTERNAL_SERVER_ERROR, "IMAGE5001", "서버 파일 변환 에러, 관리자에게 문의 바랍니다."),
+    IO_EXCEPTION(INTERNAL_SERVER_ERROR, "IMAGE5001", "서버 IO 에러, 관리자에게 문의 바랍니다."),
+    S3_UPLOAD_ERROR(INTERNAL_SERVER_ERROR, "IMAGE5001", "서버 S3 접근 에러, 관리자에게 문의 바랍니다."),
+    DELETE_FILE_ERROR(INTERNAL_SERVER_ERROR, "IMAGE5001", "서버 파일 삭제 에러, 관리자에게 문의 바랍니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
