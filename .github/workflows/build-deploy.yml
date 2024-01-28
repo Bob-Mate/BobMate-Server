@@ -26,6 +26,10 @@ jobs:
         run: echo "${{ secrets.MYSQL_SETTING }}" > ./src/main/resources/application-MYSQL.properties
         shell: bash
 
+      - name: add login settings
+        run: echo "${{ secrets.LOGIN_SETTING }}" > ./src/main/resources/application-LOGIN.properties
+        shell: bash
+
       - name: Permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
