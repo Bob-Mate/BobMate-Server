@@ -35,13 +35,6 @@ public class ContentService {
 
         if ("GLAD".equals(emotion)) {
             recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "GLAD");
-        } else if ("joy".equals(emotion)) {
-            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "모험");
-        } else if ("sad".equals(emotion)) {
-            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "드라마");
-        } else {
-            // 그 외의 감정에 대한 처리
-            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "기본 장르");
         }
 
 
