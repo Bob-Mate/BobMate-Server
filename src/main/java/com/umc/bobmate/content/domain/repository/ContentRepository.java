@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ContentRepository extends JpaRepository<Content, Long> {
-    List<Content> findByType(ContentType type);
 
     @Query("SELECT c FROM Content c " +
             "LEFT JOIN c.likes l " +
@@ -19,12 +18,18 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findTop3ContentsByLikesAndType(@Param("contentType") ContentType contentType);
 
 
+    @Query("SELECT c FROM Content c WHERE c.type = :type")
+    List<Content> findByType(@Param("type") String type);
+
+}
     //    @Query("SELECT c FROM Content c " +
     //            "LEFT JOIN FETCH c.likes " +
     //            "GROUP BY c.id " +
     //            "ORDER BY COUNT(c.likes) DESC")
     //    List<Content> findTop3ContentsByLikes();
 
+
+/*
     List<Content> findRecommendComponents
             (String emotion, String contentType, String genre);
 
@@ -35,13 +40,18 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 
 
     // 감정에 따른 장르
-    @Query("SELECT c.genreList From Content c WHERE c.emotionList=:type")
+    @Query("SELECT c.genreList From Content c WHERE c.emotionList = :emotionVar")
+    List<Content> findByEmotion(@Param("emotion") String emotionVar,
+                                     @Param("type") ContentType type, @Param("size") int size);
 
 
     // 누구와 보는지에 따른 연령 필터링
     List<Content> findByWithWhom(@Param("withWhom") String withWhom);
 
     @Query("SELECT c FROM Content c WHERE c.type = :type AND :emotion MEMBER OF c.emotionList")
-    List<Content> findByTypeAndEmotion(@Param("type") ContentType type, @Param("emotion") String emotion);
+    List<Content> findByTypeAndEmotionAndWith(@Param("type") ContentType type, @Param("emotion") String emotion, @Param("with") String with);
+    */
 
-}
+
+
+

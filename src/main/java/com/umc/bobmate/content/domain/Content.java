@@ -19,12 +19,10 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@Setter
 @Getter
 @Builder
 @AllArgsConstructor
@@ -72,19 +70,21 @@ public class Content extends BaseEntity {
 
     @OneToMany(mappedBy = "content")
     private List<Likes> likes = new ArrayList<>();
-
-    @Builder
-    public Content(String name, ContentType contentType, List<String> genreList, List<String> emotionList, String imgUrl, String linkUrl) {
-        this.name = name;
-        this.type = contentType;
-        this.genreList = genreList;
-        this.emotionList = emotionList;
-        this.imgUrl = imgUrl;
-        this.linkUrl = linkUrl;
-    }
-
-
-
-
-
 }
+
+
+//    @Builder
+//    public Content(String name, ContentType contentType, List<String> genreList, List<String> emotionList, String imgUrl, String linkUrl) {
+//        this.name = name;
+//        this.type = contentType;
+//        this.genreList = genreList;
+//        this.emotionList = emotionList;
+//        this.imgUrl = imgUrl;
+//        this.linkUrl = linkUrl;
+//    }
+
+
+
+
+
+

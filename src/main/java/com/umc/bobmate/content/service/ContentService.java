@@ -5,6 +5,9 @@ import com.umc.bobmate.content.domain.ContentType;
 import com.umc.bobmate.content.dto.ContentRequestDTO;
 import com.umc.bobmate.content.dto.ContentResponseDTO;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,58 @@ import org.springframework.stereotype.Service;
 public class ContentService {
     private final ContentRepository contentRepository;
 
+
+
+    public List<Content> recommendContents(String emotion, String withWhom, String contentType) {
+        String contentTypeEnum = String.valueOf(ContentType.valueOf(contentType.toUpperCase()));
+        List<Content> recommendedContents = contentRepository.findByType(contentTypeEnum);
+
+        List<Content> recommend = new ArrayList<>();
+        for (Content content : recommendedContents) {
+            List<String> emotionList = content.getEmotionList();
+            if (emotionList.contains(emotion)) {
+                // 감정에 해당하는 경우에만 추가
+                switch (emotion) {
+                    case "GLAD":
+                        if (content.getGenreList().contains("COMEDY") || content.getGenreList().contains("ANIMATION") || content.getGenreList().contains("ROMANCE")) {
+                            recommend.add(content);
+                        }
+                        break;
+
+                    case "EXCITED":
+                        if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("ROMANTIC_COMEDY") || content.getGenreList().contains("ROMANCE")) {
+                            recommend.add(content);
+                        }
+                        break;
+
+                    case "GLOOMY":
+                        if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("ANIMATION")) {
+                            recommend.add(content);
+                        }
+                        break;
+
+                    case "ANGRY":
+                        if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("THRILLER") || content.getGenreList().contains("CRIME")) {
+                            recommend.add(content);
+                        }
+                        break;
+
+                    case "SAD":
+                        if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ROMANCE") || content.getGenreList().contains("FAMILY")) {
+                            recommend.add(content);
+                        }
+                        break;
+                }
+            }
+        }
+        return recommend;
+    }
+
+
+
+
+/*    private final ContentRepository contentRepository;
+
     public List<ContentResponseDTO> getTop3Contents(ContentType contentType) {
         return contentRepository.findTop3ContentsByLikesAndType(contentType).stream()
                 .map(content -> ContentResponseDTO.builder().contentId(content.getId()).name(content.getName())
@@ -25,21 +80,46 @@ public class ContentService {
 
     public List<Content> recommendContents(String emotion, String withWhom, String contentType) {
         ContentType contentTypeEnum = ContentType.valueOf(contentType.toUpperCase());
-        List<Content> recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, emotion);
+        List<Content> recommendedContents = contentRepository.findByType(contentType);
 
-        // DRAMA, MOVIE, ANIMATION, MYSTERY, COMIC,
-        //    COMEDY, ROMANCE, ACTION, THRILLER, CRIME, FANTASY,
-        //    HIGHTEEN, FAMILY;
+        List<Content> recommend = new ArrayList<>();
+        for (Content content : recommendedContents) {
+            List<String> emotionList = content.getEmotionList();
+            for (String e : emotionList){
+                switch (e){
+                    //GLAD, EXCITED, GLOOMY, ANGRY, SAD;
+                    case "GLAD":
+                        if (content.getGenreList().contains("COMEDY") || content.getGenreList().contains("ANIMATION") || content.getGenreList().contains("ROMANCE")) {
+                            recommend.add(content);
+                        }
+                        break;
 
-//        GLAD, EXCITED, GLOOMY, ANGRY, SAD;
+                    case "EXCITED" :
+                        if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("ROMANCE")){
+                            recommend.add(content);
+                        } break;
 
-        if ("GLAD".equals(emotion)) {
-            recommendedContents = contentRepository.findByTypeAndEmotion(contentTypeEnum, "GLAD");
+                    case "GLOOMY" :
+                    if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("ANIMATION")){
+                        recommend.add(content);
+                    }break;
+
+                    case "ANGRY" :
+                        if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("THRILLER") || content.getGenreList().contains("CRIME")){
+                            recommend.add(content);
+                        } break;
+
+                    case "SAD" :
+                        if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("Romance") || content.getGenreList().contains("FAMILY")){
+                            recommend.add(content);
+                        } break;
+
+                }
+            }
+
         }
-
-
-        return recommendedContents;
-    }
+        return recommend;
+    } */
 
 
 //    public List<ContentResponse> getAllVideoContents() {
@@ -78,11 +158,6 @@ public class ContentService {
                 .imgUrl(content.getImgUrl())
                 .linkUrl(content.getLinkUrl())
                 .build();
-    }
-
-    public boolean matchesGenre(String selectedGenre, List<String> contentGenres) {
-        return contentGenres.contains(selectedGenre);
-
     }
 }
 

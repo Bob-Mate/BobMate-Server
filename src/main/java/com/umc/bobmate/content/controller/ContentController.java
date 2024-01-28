@@ -1,13 +1,16 @@
 package com.umc.bobmate.content.controller;
 
 import com.umc.bobmate.content.domain.Content;
+import com.umc.bobmate.content.domain.Emotion;
 import com.umc.bobmate.content.dto.ContentRequestDTO;
 import com.umc.bobmate.content.dto.ContentResponseDTO;
 import com.umc.bobmate.content.service.ContentService;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.umc.bobmate.like.service.LikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.umc.bobmate.content.domain.ContentType;
@@ -20,18 +23,18 @@ public class ContentController {
     private final ContentService contentService;
     private final LikeService likeService;
 
-    @GetMapping("")
-    public ApiResponse<List<ContentResponseDTO>> getAllContents(@RequestParam(name = "section") int section) {
-
-        if (section == 0) { // 0: VIDEO
-            return ApiResponse.onSuccess(contentService.getTop3Contents(ContentType.VIDEO));
-        } else if (section == 1) { // 1: TEXT
-            return ApiResponse.onSuccess(contentService.getTop3Contents(ContentType.TEXT));
-        } else {
-            System.out.println("섹션값 오류");
-            throw new IllegalArgumentException("Invalid");
-        }
-    }
+//    @GetMapping("")
+//    public ApiResponse<List<ContentResponseDTO>> getAllContents(@RequestParam(name = "section") int section) {
+//
+//        if (section == 0) { // 0: VIDEO
+//            return ApiResponse.onSuccess(contentService.getTop3Contents(ContentType.VIDEO));
+//        } else if (section == 1) { // 1: TEXT
+//            return ApiResponse.onSuccess(contentService.getTop3Contents(ContentType.TEXT));
+//        } else {
+//            System.out.println("섹션값 오류");
+//            throw new IllegalArgumentException("Invalid");
+//        }
+//    }
 
 
     //    @GetMapping("/video")
@@ -45,16 +48,22 @@ public class ContentController {
     //    }
 
     /* 컨텐츠 추천 결과 */
-    @GetMapping("/recommend/result")
-    public List<ContentResponseDTO> recommendContents(ContentRequestDTO dto){
-        String contentAge = dto.getWithWhom();
-        String type = dto.getContentType();
-        String emotion = dto.getEmotion();
+
+/*    @PostMapping("/recommend")
+    public ApiResponse<List<ContentResponseDTO>> recommendContent(@RequestBody ContentRequestDTO contentRequestDTO) {
+        String emotion = contentRequestDTO.getEmotion();
+        String withWhom = contentRequestDTO.getWithWhom();
+        String contentType = contentRequestDTO.getContentType();
+
+        // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
+        List<Content> recommendedContents = contentService.recommendContents(emotion, withWhom, contentType);
+        recommendedContents.stream().toArray();
         return null;
     }
+*/
 
     @PostMapping("/recommend")
-    public List<Content> recommendContent(@RequestBody ContentRequestDTO contentRequestDTO) {
+    public ApiResponse<List<ContentResponseDTO>> recommendContent(@RequestBody ContentRequestDTO contentRequestDTO) {
         String emotion = contentRequestDTO.getEmotion();
         String withWhom = contentRequestDTO.getWithWhom();
         String contentType = contentRequestDTO.getContentType();
@@ -62,19 +71,18 @@ public class ContentController {
         // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
         List<Content> recommendedContents = contentService.recommendContents(emotion, withWhom, contentType);
 
-        // 추천 컨텐츠의 emotion 리스트 접근
-        for (Content content : recommendedContents) {
-            List<String> emotionList = content.getEmotionList();
-            // 여기서 emotionList 활용
-        }
+        // ContentResponseDTO로 변환
+        List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()
+                .map(content -> ContentResponseDTO.builder()
+                        .contentId(content.getId())
+                        .name(content.getName())
+                        .imgUrl(content.getImgUrl())
+                        .linkUrl(content.getLinkUrl())
+                        .build())
+                .collect(Collectors.toList());
 
-        // 프론트에 추천 컨텐츠 반환
-        return recommendedContents;
+        // ApiResponse를 이용하여 응답 생성 및 반환
+        return ApiResponse.onSuccess(contentResponseDTOList);
     }
-
-
-
-//        return contentService.recommendContents(dto);
-
 
 }
