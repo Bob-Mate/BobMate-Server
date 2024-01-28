@@ -8,6 +8,7 @@ import com.umc.bobmate.member.dto.response.CommentResponse;
 import com.umc.bobmate.member.dto.response.EditPageResponse;
 import com.umc.bobmate.member.dto.response.PreferenceResponse;
 import com.umc.bobmate.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +29,7 @@ public class MemberController {
     @PostMapping(value = "/api/v1/members/edit", consumes = {APPLICATION_JSON_VALUE, MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<Void> getEditPage(
             @RequestPart("profileImage") MultipartFile multipartFile,
-            @RequestPart("request") EditRequest editRequest
+            @RequestPart("request") @Valid EditRequest editRequest
     ) {
         memberService.editProfile(multipartFile, editRequest);
         return ApiResponse.onSuccess();
