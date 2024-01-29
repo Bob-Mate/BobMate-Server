@@ -6,12 +6,7 @@ import com.umc.bobmate.content.domain.repository.ContentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-<<<<<<< HEAD
-import com.umc.bobmate.content.dto.ContentResponseDTO;
-=======
 import com.umc.bobmate.content.dto.ContentSpecialSituationResponse;
->>>>>>> d7101cb7d1b615c35946aacc24dab758ab3b4179
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,11 +85,7 @@ public class ContentService {
                 case 2:
                     if (c.getGenreList().contains("COMEDY") || c.getGenreList().contains("HIGHTEEN"))
                         recommend.add(c);
-<<<<<<< HEAD
-                    break;
-=======
                      break;
->>>>>>> d7101cb7d1b615c35946aacc24dab758ab3b4179
 
                 case 3:
                     if (c.getGenreList().contains("CRIME") || c.getGenreList().contains("ACTION") || c.getGenreList().contains("FANTASY"))
@@ -104,12 +95,7 @@ public class ContentService {
                 case 4:
 
                     if (c.getGenreList().contains("ANIMATION"))
-<<<<<<< HEAD
-                        recommend.add(c);
-=======
                             recommend.add(c);
->>>>>>> d7101cb7d1b615c35946aacc24dab758ab3b4179
-
                     break;
 
                 default:
@@ -121,13 +107,8 @@ public class ContentService {
         return recommend;
     }
 
-<<<<<<< HEAD
-    public ContentResponseDTO mapContentToResponseDTO(Content content) {
-        return ContentResponseDTO.builder()
-=======
     public ContentSpecialSituationResponse mapContentToResponseDTO(Content content) {
         return ContentSpecialSituationResponse.builder()
->>>>>>> d7101cb7d1b615c35946aacc24dab758ab3b4179
                 .contentId(content.getId())
                 .name(content.getName())
                 .type(content.getType())
