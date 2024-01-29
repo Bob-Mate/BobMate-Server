@@ -7,11 +7,15 @@ import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.content.service.ContentService;
 import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.service.LikeService;
+import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
+import com.umc.bobmate.member.domain.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +33,7 @@ public class ContentController {
 
     private final ContentService contentService;
     private final LikeService likeService;
+//    private final AuthTokensGenerator authTokensGenerator;
 
     @GetMapping("/top3")
     @Operation(summary = "영상 best3, 텍스트 best3", description = "파라미터로 받은 section을 확인하여 해당 콘텐츠를 반환합니다.")
@@ -50,6 +55,7 @@ public class ContentController {
     @Parameter(name = "contentId", description = "콘텐츠 ID")
     public ApiResponse<Void> likeContent(@RequestParam("memberId") Long memberId,
                                          @RequestParam("contentId") Long contentId) {
+//        final Member loginMember = authTokensGenerator.getLoginMember();
         try {
             likeService.likeContent(memberId, contentId);
             return ApiResponse.of(_OK);
@@ -72,6 +78,7 @@ public class ContentController {
         }
 
     }
+
 
 //    @GetMapping("/video")
 //    public ApiResponse<List<ContentResponse>> getTop3VideoContents() {

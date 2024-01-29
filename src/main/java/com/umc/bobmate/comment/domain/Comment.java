@@ -16,14 +16,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = PROTECTED)
+@SQLRestriction("status = 'ACTIVE'")
 public class Comment extends BaseEntity {
 
     @Id
@@ -43,4 +47,11 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder
+    public Comment(Emotion emotion, Genre genre, String food, Member member) {
+        this.emotion = emotion;
+        this.genre = genre;
+        this.food = food;
+        this.member = member;
+    }
 }

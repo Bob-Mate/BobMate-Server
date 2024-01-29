@@ -4,6 +4,7 @@ import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.ContentType;
 import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
+import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
