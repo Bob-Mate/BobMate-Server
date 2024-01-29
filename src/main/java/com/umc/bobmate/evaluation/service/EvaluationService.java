@@ -8,4 +8,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EvaluationService {
     private final EvaluationRepository evaluationRepository;
+
+    public void evaluateContent(Long contentId, Long memberId, boolean isGood) {
+    }
 }

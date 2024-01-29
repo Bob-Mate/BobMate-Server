@@ -4,6 +4,7 @@ import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.Emotion;
 import com.umc.bobmate.content.dto.ContentRequestDTO;
 import com.umc.bobmate.content.dto.ContentResponseDTO;
+import com.umc.bobmate.content.dto.ContentSpecialSituationResponse;
 import com.umc.bobmate.content.service.ContentService;
 import java.util.List;
 import java.util.stream.Collectors;
