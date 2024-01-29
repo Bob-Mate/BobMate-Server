@@ -6,10 +6,9 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter
 @Builder
-public class ContentResponseDTO {
-
+@Getter
+public class ContentSpecialSituationResponse {
     private Long contentId;
     private String name;
     private ContentType type;
@@ -18,12 +17,3 @@ public class ContentResponseDTO {
     private List<String> genreList;
     private List<String> emotionList;
 }
-
-//    public static ContentResponse from(Content content){
-//        return ContentResponse.builder()
-//                .name(content.getName())
-//                .imgUrl(content.getImgUrl())
-//                .linkUrl(content.getLinkUrl())
-//                .build();
-//    }
-

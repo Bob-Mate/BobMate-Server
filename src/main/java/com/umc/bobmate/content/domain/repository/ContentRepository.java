@@ -19,7 +19,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 
 
     @Query("SELECT c FROM Content c WHERE c.type = :type")
-    List<Content> findByType(@Param("type") String type);
+    List<Content> findByType(@Param("type") ContentType type);
 
 }
     //    @Query("SELECT c FROM Content c " +
@@ -29,28 +29,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     //    List<Content> findTop3ContentsByLikes();
 
 
-/*
-    List<Content> findRecommendComponents
-            (String emotion, String contentType, String genre);
-
-    // emotion과 type을 통한
-    @Query("SELECT c.emotionList From Content c WHERE c.type=:type")
-    List<Content> findGenreByEmotion(@Param("emotion") String emotion,
-                                @Param("type") ContentType type, @Param("size") int size);
-
-
-    // 감정에 따른 장르
-    @Query("SELECT c.genreList From Content c WHERE c.emotionList = :emotionVar")
-    List<Content> findByEmotion(@Param("emotion") String emotionVar,
-                                     @Param("type") ContentType type, @Param("size") int size);
-
-
-    // 누구와 보는지에 따른 연령 필터링
-    List<Content> findByWithWhom(@Param("withWhom") String withWhom);
-
-    @Query("SELECT c FROM Content c WHERE c.type = :type AND :emotion MEMBER OF c.emotionList")
-    List<Content> findByTypeAndEmotionAndWith(@Param("type") ContentType type, @Param("emotion") String emotion, @Param("with") String with);
-    */
 
 
 

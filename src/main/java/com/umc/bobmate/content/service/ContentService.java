@@ -2,16 +2,15 @@ package com.umc.bobmate.content.service;
 
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.ContentType;
-import com.umc.bobmate.content.dto.ContentRequestDTO;
-import com.umc.bobmate.content.dto.ContentResponseDTO;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import com.umc.bobmate.content.dto.ContentSpecialSituationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +18,16 @@ import org.springframework.stereotype.Service;
 public class ContentService {
     private final ContentRepository contentRepository;
 
+//    public List<ContentResponseDTO> getTop3Contents(ContentType contentType) {
+//        return contentRepository.findTop3ContentsByLikesAndType(contentType).stream()
+//                .map(content -> ContentResponseDTO.builder().contentId(content.getId()).name(content.getName())
+//                        .imgUrl(content.getImgUrl()).linkUrl(content.getLinkUrl()).build())
+//                .collect(Collectors.toList());
+//    }
 
-
-    public List<Content> recommendContents(String emotion, String withWhom, String contentType) {
-        String contentTypeEnum = String.valueOf(ContentType.valueOf(contentType.toUpperCase()));
-        List<Content> recommendedContents = contentRepository.findByType(contentTypeEnum);
+    @Transactional
+    public List<Content> recommendContents(String emotion, String withWhom, ContentType contentType) {
+        List<Content> recommendedContents = contentRepository.findByType(contentType);
 
         List<Content> recommend = new ArrayList<>();
         for (Content content : recommendedContents) {
@@ -66,141 +70,150 @@ public class ContentService {
         return recommend;
     }
 
-
-
-
-/*    private final ContentRepository contentRepository;
-
-    public List<ContentResponseDTO> getTop3Contents(ContentType contentType) {
-        return contentRepository.findTop3ContentsByLikesAndType(contentType).stream()
-                .map(content -> ContentResponseDTO.builder().contentId(content.getId()).name(content.getName())
-                        .imgUrl(content.getImgUrl()).linkUrl(content.getLinkUrl()).build())
-                .collect(Collectors.toList());
-    }
-
-    public List<Content> recommendContents(String emotion, String withWhom, String contentType) {
-        ContentType contentTypeEnum = ContentType.valueOf(contentType.toUpperCase());
-        List<Content> recommendedContents = contentRepository.findByType(contentType);
-
+    @Transactional
+    public List<Content> recommendSpecialSituation(Integer id, ContentType type) {
+        // id에 따른 특정 상황에 맞는 추천 컨텐츠를 찾기
+        List<Content> recommendedContents = contentRepository.findByType(type);
         List<Content> recommend = new ArrayList<>();
-        for (Content content : recommendedContents) {
-            List<String> emotionList = content.getEmotionList();
-            for (String e : emotionList){
-                switch (e){
-                    //GLAD, EXCITED, GLOOMY, ANGRY, SAD;
-                    case "GLAD":
-                        if (content.getGenreList().contains("COMEDY") || content.getGenreList().contains("ANIMATION") || content.getGenreList().contains("ROMANCE")) {
-                            recommend.add(content);
-                        }
-                        break;
 
-                    case "EXCITED" :
-                        if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("ROMANCE")){
-                            recommend.add(content);
-                        } break;
+        for(Content c : recommendedContents){
+            switch (id) {
+                case 1:
+                    if (c.getGenreList().contains("DRAMA") || c.getGenreList().contains("ROMANCE"))
+                        recommend.add(c);
+                    break;
 
-                    case "GLOOMY" :
-                    if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("ANIMATION")){
-                        recommend.add(content);
-                    }break;
+                case 2:
+                    if (c.getGenreList().contains("COMEDY") || c.getGenreList().contains("HIGHTEEN"))
+                        recommend.add(c);
+                     break;
 
-                    case "ANGRY" :
-                        if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("THRILLER") || content.getGenreList().contains("CRIME")){
-                            recommend.add(content);
-                        } break;
+                case 3:
+                    if (c.getGenreList().contains("CRIME") || c.getGenreList().contains("ACTION") || c.getGenreList().contains("FANTASY"))
+                        recommend.add(c);
+                    break;
 
-                    case "SAD" :
-                        if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("Romance") || content.getGenreList().contains("FAMILY")){
-                            recommend.add(content);
-                        } break;
+                case 4:
 
-                }
+                    if (c.getGenreList().contains("ANIMATION"))
+                            recommend.add(c);
+
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Invalid id: " + id);
             }
 
         }
+
         return recommend;
-    } */
+    }
 
-
-//    public List<ContentResponse> getAllVideoContents() {
-//        List<Content> videoContents = contentRepository.findByType(ContentType.VIDEO);
-//        return videoContents.stream()
-//                .map((video) -> ContentResponse.builder().contentId(video.getId()).name(video.getName())
-//                        .imgUrl(video.getImgUrl()).linkUrl(video.getLinkUrl()).build()).collect(Collectors.toList());
-//    }
-//
-//    public List<ContentResponse> getAllTextContents() {
-//        List<Content> textContents = contentRepository.findByType(ContentType.TEXT);
-//        return textContents.stream()
-//                .map((text) -> ContentResponse.builder().contentId(text.getId()).name(text.getName())
-//                        .imgUrl(text.getImgUrl()).linkUrl(text.getLinkUrl()).build()).collect(Collectors.toList());
-//    }
-
-//    public List<ContentResponseDTO> recommendContents(ContentRequestDTO dto) {
-//
-//        contentRepository.findByEmotion(dto.getEmotion(), 3);
-//
-////        return recommendedContents.stream()
-////                .map(this::convertToDTO)
-////                .collect(Collectors.toList());
-//
-//        return null;
-//    }
-
-
-    private ContentResponseDTO convertToDTO(Content content) {
-        return ContentResponseDTO.builder()
+    public ContentSpecialSituationResponse mapContentToResponseDTO(Content content) {
+        return ContentSpecialSituationResponse.builder()
                 .contentId(content.getId())
                 .name(content.getName())
-                .type(content.getType().name()) // Enum 타입을 문자열로 변환
-                .genreList(content.getGenreList())
-                .emotionList(content.getEmotionList())
+                .type(content.getType())
                 .imgUrl(content.getImgUrl())
                 .linkUrl(content.getLinkUrl())
+                .genreList(content.getGenreList())
+                .emotionList(content.getEmotionList())
                 .build();
     }
-}
 
-//        String genre = dto.getGenreList().;
-//        List<String> emotion = dto.getEmotionList();
-//        ContentType type = dto.getType();
+//    private List<Content> recommendSpecialSituationForId1(ContentType type) {
+//        // 상황 1에 대한 로직
 //
-//        List<Content> recommendedContents = contentRepository.
-//                findRecommendContents(genre, emotion, type);
-
-//    public List<ContentResponse> recommendContents(ContentRequest dto) {
-//        // ContentRequestDTO에서 필요한 정보를 추출하여 서비스에 전달
-//        // 추천 로직을 구현하고 결과를 ContentResponseDTO로 매핑
-//        List<Content> recommendedContents = contentRepository.findByGenreListAndEmotionListAndType(
-//                dto.getGenreList().get(), requestDTO.getEmotion(), requestDTO.getContentType()
-//        );
-//        return recommendContents.stream()
-//                .map(this::converTODTO)
+////        return recommendedContents.stream()
+////                .filter(content -> content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ROMANCE"))
+////                .map(this::mapContentToResponseDTO)
+////                .collect(Collectors.toList());
+//        return recommendedContents;
+//    }
+//
+//    private List<ContentSpecialSituationResponse> recommendSpecialSituationForId2(ContentType type) {
+//        List<Content> recommendedContents = contentRepository.findByType(type);
+//        return recommendedContents.stream()
+//                .filter(content -> content.getGenreList().contains("COMEDY") || content.getGenreList().contains("HIGHTEEN"))
+//                .map(this::mapContentToResponseDTO)
+//                .collect(Collectors.toList());
+//    }
+//
+//    private List<ContentSpecialSituationResponse> recommendSpecialSituationForId3(ContentType type) {
+//        List<Content> recommendedContents = contentRepository.findByType(type);
+//        return recommendedContents.stream()
+//                .filter(content -> content.getGenreList().contains("CRIME") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("FANTASY"))
+//                .map(this::mapContentToResponseDTO)
+//                .collect(Collectors.toList());
+//    }
+//
+//    private List<ContentSpecialSituationResponse> recommendSpecialSituationForId4(ContentType type) {
+//        List<Content> recommendedContents = contentRepository.findByType(type);
+//        return recommendedContents.stream()
+//                .filter(content -> content.getGenreList().contains("ANIMATION"))
+//                .map(this::mapContentToResponseDTO)
 //                .collect(Collectors.toList());
 //    }
 
-/*
-public List<ContentResponse> filterContents(ContentRequest request) {
-        // Emotion을 통한 장르 필터링
-        List<Content> filteredContents = contentRepository.findByEmotionInAndGenreListSize(request.getEmotion(), 3);
 
-        // ContentType을 통한 필터링
-        if (request.getContentType() != null) {
-            ContentType contentType = ContentType.valueOf(request.getContentType().toUpperCase());
-            filteredContents = contentRepository.findByTypeAndEmotionInAndGenreListSize(contentType, request.getEmotion(), 3);
-        }
+//    private List<Content> recommendSpecialSituationForId1(ContentType type) {
+//        // 상황 1에 대한 로직
+//        List<Content> responseList = new ArrayList<>();
+//
+//        List<Content> recommendedContents = contentRepository.findByType(type);
+//        for (Content content : recommendedContents) {
+//            if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ROMANCE")) {
+//                responseList.add(content);
+//            }
+//        }
+//        return responseList;
+//    }
+//
+//    private List<Content> recommendSpecialSituationForId2(ContentType type) {
+//        List<Content> responseList = new ArrayList<>();
+//
+//        List<Content> recommendedContents = contentRepository.findByType(type);
+//        for (Content content : recommendedContents) {
+//            if (content.getGenreList().contains("COMEDY") || content.getGenreList().contains("HIGHTEEN")) {
+//                responseList.add(content);
+//            }
+//        }
+//        return responseList;
+//    }
+//    private List<Content> recommendSpecialSituationForId3(ContentType type) {
+//        List<Content> responseList = new ArrayList<>();
+//
+//        List<Content> recommendedContents = contentRepository.findByType(type);
+//        for (Content content : recommendedContents) {
+//            if (content.getGenreList().contains("CRIME") || content.getGenreList().contains("ACTION")|| content.getGenreList().contains("FANTASY")) {
+//                responseList.add(content);
+//            }
+//        }
+//        return responseList;
+//    }
+//
+//    private List<Content> recommendSpecialSituationForId4(ContentType type) {
+//        List<Content> responseList = new ArrayList<>();
+//
+//        List<Content> recommendedContents = contentRepository.findByType(type);
+//        for (Content content : recommendedContents) {
+//            if (content.getGenreList().contains("ANIMATION")) {
+//                responseList.add(content);
+//            }
+//        }
+//        return responseList;
+//    }
 
-        // 누구와 보는지에 따른 연령 필터링
-        if ("가족".equals(request.getWithWhom())) {
-            filteredContents = contentRepository.findByWithWhom("12세");
-        } else if ("친구".equals(request.getWithWhom()) || "연인".equals(request.getWithWhom())) {
-            filteredContents = contentRepository.findByWithWhom("15세");
-        }
+//    private ContentResponseDTO convertToDTO(Content content) {
+//        return ContentResponseDTO.builder()
+//                .contentId(content.getId())
+//                .name(content.getName())
+//                .type(content.getType()) // Enum 타입을 문자열로 변환
+//                .genreList(content.getGenreList())
+//                .emotionList(content.getEmotionList())
+//                .imgUrl(content.getImgUrl())
+//                .linkUrl(content.getLinkUrl())
+//                .build();
+//    }
+}
 
-        return convertToContentResponseList(filteredContents);
-    }
-
-    private List<ContentResponse> convertToContentResponseList(List<Content> contents) {
-        // Content를 ContentResponse로 변환하는 로직 추가
-    }
-*/
