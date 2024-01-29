@@ -3,7 +3,12 @@ package com.umc.bobmate.config;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -19,8 +24,26 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
-    /**
-     * OpenAPI bean 구성
-     * @return
-     */
+    @Bean
+    public OpenAPI openAPI() {
+
+        // Security 스키마 설정
+        SecurityScheme bearerAuth = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("Authorization")
+                .in(SecurityScheme.In.HEADER)
+                .name(HttpHeaders.AUTHORIZATION);
+
+        // Security 요청 설정
+        io.swagger.v3.oas.models.security.SecurityRequirement addSecurityItem = new io.swagger.v3.oas.models.security.SecurityRequirement().addList("Authorization");
+
+
+        return new OpenAPI()
+                // Security 인증 컴포넌트 설정
+                .components(new Components().addSecuritySchemes("Authorization", bearerAuth))
+                // API 마다 Security 인증 컴포넌트 설정
+                .addSecurityItem(addSecurityItem);
+    }
+
 }
