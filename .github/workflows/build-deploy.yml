@@ -2,7 +2,7 @@ name: Build and Deploy Spring Boot to AWS EC2
 
 on:
   push:
-    branches: ["main"]
+    branches: ["develop"]
 
 env:
   PROJECT_NAME: bobmate
@@ -26,12 +26,20 @@ jobs:
         run: echo "${{ secrets.MYSQL_SETTING }}" > ./src/main/resources/application-MYSQL.properties
         shell: bash
 
+      - name: add login settings
+        run: echo "${{ secrets.LOGIN_SETTING }}" > ./src/main/resources/application-LOGIN.properties
+        shell: bash
+
+      - name: add s3 settings
+        run: echo "${{ secrets.S3_SETTING }}" > ./src/main/resources/application-S3.properties
+        shell: bash
+
       - name: Permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew build test
+        run: ./gradlew build
         
       - name: Make Zip File
         run: zip -qq -r ./$GITHUB_SHA.zip .

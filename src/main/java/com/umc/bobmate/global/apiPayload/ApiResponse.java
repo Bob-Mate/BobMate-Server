@@ -8,6 +8,8 @@ import com.umc.bobmate.global.apiPayload.code.status.SuccessStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import static com.umc.bobmate.global.apiPayload.code.status.SuccessStatus.*;
+
 @Getter
 @AllArgsConstructor
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
@@ -21,8 +23,12 @@ public class ApiResponse<T> {
     private T result;
 
     // success
+    public static <T> ApiResponse<T> onSuccess() {
+        return new ApiResponse<>(true, _NO_CONTENT.getCode(), _NO_CONTENT.getMessage(), null);
+    }
+
     public static <T> ApiResponse<T> onSuccess(T result) {
-        return new ApiResponse<>(true, SuccessStatus._OK.getCode(), SuccessStatus._OK.getMessage(), result);
+        return new ApiResponse<>(true, _OK.getCode(), _OK.getMessage(), result);
     }
 
     public static <T> ApiResponse<T> of(BaseCode code, T result) {

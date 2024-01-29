@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum SuccessStatus implements BaseCode {
     // common
-    _OK(HttpStatus.OK, "COMMON200","성공입니다.");
+    _OK(HttpStatus.OK, "COMMON200","성공입니다."),
+    _NO_CONTENT(HttpStatus.NO_CONTENT, "COMMON201","성공입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

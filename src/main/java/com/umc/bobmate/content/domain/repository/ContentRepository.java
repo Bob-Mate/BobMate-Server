@@ -19,7 +19,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 
 
     @Query("SELECT c FROM Content c WHERE c.type = :type")
-    List<Content> findByType(@Param("type") String type);
+    List<Content> findByType(@Param("type") ContentType type);
 
 }
     //    @Query("SELECT c FROM Content c " +
