@@ -1,9 +1,10 @@
 package com.umc.bobmate.login.oauth.client;
 
 import com.umc.bobmate.login.oauth.dto.param.OAuthLoginParams;
+import com.umc.bobmate.login.oauth.dto.response.UnLinkResponse;
 import com.umc.bobmate.login.oauth.dto.token.KakaoTokens;
-import com.umc.bobmate.login.oauth.dto.info.KakaoInfoResponse;
-import com.umc.bobmate.login.oauth.dto.info.OAuthInfoResponse;
+import com.umc.bobmate.login.oauth.dto.response.KakaoInfoResponse;
+import com.umc.bobmate.login.oauth.dto.response.OAuthInfoResponse;
 import com.umc.bobmate.member.domain.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoApiClient implements OAuthApiClient {
 
     private static final String GRANT_TYPE = "authorization_code";
+    private static final String TARGET_ID_TYPE = "user_id";
 
     @Value("${oauth.kakao.url.auth}")
     private String authUrl;
@@ -29,6 +31,9 @@ public class KakaoApiClient implements OAuthApiClient {
 
     @Value("${oauth.kakao.client-id}")
     private String clientId;
+
+    @Value("${oauth.kakao.admin.key}")
+    private String adminKey;
 
     private final RestTemplate restTemplate;
 
@@ -69,6 +74,24 @@ public class KakaoApiClient implements OAuthApiClient {
 
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
 
-        return restTemplate.postForObject(url, request, KakaoInfoResponse.class);
+        final KakaoInfoResponse kakaoInfoResponse = restTemplate.postForObject(url, request, KakaoInfoResponse.class);
+        if (kakaoInfoResponse == null) throw new AssertionError();
+        kakaoInfoResponse.setAccessToken(accessToken);
+
+        return kakaoInfoResponse;
+    }
+
+    @Override
+    public void requestUnlink(String socialAccessToken) {
+        String url = apiUrl + "/v1/user/unlink";
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.set("Authorization", "Bearer " + socialAccessToken);
+
+        HttpEntity<?> request = new HttpEntity<>(httpHeaders);
+
+        final UnLinkResponse response = restTemplate.postForObject(url, request, UnLinkResponse.class);
+        response.getId();
     }
 }
