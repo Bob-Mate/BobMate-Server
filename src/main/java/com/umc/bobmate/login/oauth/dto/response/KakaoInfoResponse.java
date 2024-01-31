@@ -1,4 +1,4 @@
-package com.umc.bobmate.login.oauth.dto.info;
+package com.umc.bobmate.login.oauth.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,6 +14,8 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
 
     @JsonProperty("id")
     private Long socialId;
+
+    private String accessToken;
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -48,5 +50,14 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
     @Override
     public OAuthProvider getOAuthProvider() {
         return OAuthProvider.KAKAO;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    @Override
+    public String getAccessToken() {
+        return accessToken;
     }
 }

@@ -1,9 +1,10 @@
 package com.umc.bobmate.login.oauth.client;
 
 import com.umc.bobmate.login.oauth.dto.param.OAuthLoginParams;
+import com.umc.bobmate.login.oauth.dto.response.NaverInfoResponse;
+import com.umc.bobmate.login.oauth.dto.response.OAuthInfoResponse;
+import com.umc.bobmate.login.oauth.dto.response.UnLinkResponse;
 import com.umc.bobmate.login.oauth.dto.token.NaverTokens;
-import com.umc.bobmate.login.oauth.dto.info.NaverInfoResponse;
-import com.umc.bobmate.login.oauth.dto.info.OAuthInfoResponse;
 import com.umc.bobmate.member.domain.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class NaverApiClient implements OAuthApiClient {
 
     private static final String GRANT_TYPE = "authorization_code";
+    private static final String DELETE_GRANT_TYPE = "delete";
 
     @Value("${oauth.naver.url.auth}")
     private String authUrl;
@@ -72,6 +74,29 @@ public class NaverApiClient implements OAuthApiClient {
 
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
 
-        return restTemplate.postForObject(url, request, NaverInfoResponse.class);
+        final NaverInfoResponse naverInfoResponse = restTemplate.postForObject(url, request, NaverInfoResponse.class);
+        if (naverInfoResponse == null) throw new AssertionError();
+        naverInfoResponse.setAccessToken(accessToken);
+
+        return naverInfoResponse;
+    }
+
+    @Override
+    public void requestUnlink(String socialAccessToken) {
+        String url = authUrl + "/oauth2.0/token";
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_id", clientId);
+        body.add("client_secret", clientSecret);
+        body.add("access_token", socialAccessToken);
+        body.add("grant_type", DELETE_GRANT_TYPE);
+        body.add("service_provider", "NAVER");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        final HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
+
+        final UnLinkResponse response = restTemplate.postForObject(url, request, UnLinkResponse.class);
+        System.out.println("삭제된 토큰 확인하기:: " + response.getAccessToken());
     }
 }

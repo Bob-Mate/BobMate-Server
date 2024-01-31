@@ -6,10 +6,10 @@ import com.umc.bobmate.login.oauth.dto.param.KakaoLoginParams;
 import com.umc.bobmate.login.oauth.dto.param.NaverLoginParams;
 import com.umc.bobmate.login.service.OAuthLoginService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.umc.bobmate.member.domain.OAuthProvider.KAKAO;
+import static com.umc.bobmate.member.domain.OAuthProvider.NAVER;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +25,17 @@ public class AuthController {
     @PostMapping("/naver")
     public ApiResponse<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
         return ApiResponse.onSuccess(oAuthLoginService.login(params));
+    }
+
+    @DeleteMapping("/kakao")
+    public ApiResponse<Void> unlinkKakao() {
+        oAuthLoginService.unlink(KAKAO);
+        return ApiResponse.onSuccess();
+    }
+
+    @DeleteMapping("/naver")
+    public ApiResponse<Void> unlinkNaver() {
+        oAuthLoginService.unlink(NAVER);
+        return ApiResponse.onSuccess();
     }
 }
