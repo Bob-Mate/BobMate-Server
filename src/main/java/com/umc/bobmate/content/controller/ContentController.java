@@ -1,11 +1,16 @@
 package com.umc.bobmate.content.controller;
 
+import com.umc.bobmate.comment.dto.CommentResponseDTO;
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.Emotion;
+import com.umc.bobmate.content.domain.Genre;
+import com.umc.bobmate.content.domain.repository.ContentRepository;
 import com.umc.bobmate.content.dto.ContentRequestDTO;
 import com.umc.bobmate.content.dto.ContentResponseDTO;
 import com.umc.bobmate.content.dto.ContentSpecialSituationResponse;
 import com.umc.bobmate.content.service.ContentService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +27,15 @@ import com.umc.bobmate.global.apiPayload.ApiResponse;
 @RequiredArgsConstructor
 public class ContentController {
     private final ContentService contentService;
+    private final ContentService commentService;
+    private final ContentRepository contentRepository;
 
+    // 일반상황으로 컨텐츠 추천
     @GetMapping("/recommend/daily")
     public ApiResponse<List<ContentResponseDTO>> recommendContent(@RequestParam String emotion,
                                                                   @RequestParam String withWhom,
                                                                   @RequestParam ContentType contentType) {
+
         // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
         List<Content> recommendedContents = contentService.recommendContents(emotion, withWhom, contentType);
 
@@ -47,12 +56,16 @@ public class ContentController {
         return ApiResponse.onSuccess(contentResponseDTOList);
     }
 
-    @GetMapping("/recommend/special")
-    public ApiResponse<List<ContentResponseDTO>> recommendContentsSpecial(@RequestParam Integer id,
-                                                                          @RequestParam ContentType contentType) {
-        List<Content> responseList = contentService.recommendSpecialSituation(id, contentType);
 
-        List<ContentResponseDTO> contentResponseDTOList = responseList.stream()
+    // 특별상황으로 컨텐츠 추천
+    @GetMapping("/recommend/special")
+    public ApiResponse<List<ContentResponseDTO>> recommendByGenre(CommentResponseDTO dto,
+                                                                  @RequestParam ContentType type) {
+        // 주어진 감정과 음식으로 가장 많이 등장한 장르 추출
+        Genre recommendedGenre = dto.getGenre();
+        List<Content> recommendedContents = contentService.findSpecialContent(dto, type);
+
+        List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()
                 .map(content -> ContentResponseDTO.builder()
                         .contentId(content.getId())
                         .name(content.getName())
@@ -64,7 +77,47 @@ public class ContentController {
                         .build())
                 .collect(Collectors.toList());
 
+        // 추천된 컨텐츠를 반환합니다.
         return ApiResponse.onSuccess(contentResponseDTOList);
     }
-
 }
+
+//        } else {
+//            return ApiResponse.onFailure(HttpStatus.NOT_FOUND,
+//                    "No recommendations found for the given emotion and food.")
+//
+//        }
+
+//    private List<Content> getContentByGenre(Genre genre, ContentType type) {
+//        // 여기에 해당 장르의 컨텐츠를 가져오는 로직을 추가합니다.
+//        List<Content> content = ;
+//
+//
+//        return contentService.findContentsByGenre(genre);
+//    }
+//}
+
+
+//    @GetMapping("/recommend/special")
+//    public ApiResponse<List<ContentResponseDTO>> recommendContentsSpecial(Genre genre, @RequestParam ContentType contentType) {
+//        List<Content> contents = contentService.recommendSpecialSituation(genre, contentType);
+//
+//        List<ContentResponseDTO> contentResponseDTOList = responseList.stream()
+//                .map(content -> ContentResponseDTO.builder()
+//                        .contentId(content.getId())
+//                        .name(content.getName())
+//                        .imgUrl(content.getImgUrl())
+//                        .linkUrl(content.getLinkUrl())
+//                        .type(content.getType())
+//                        .genreList(content.getGenreList())
+//                        .emotionList(content.getEmotionList())
+//                        .build())
+//                .collect(Collectors.toList());
+//
+//        return ApiResponse.onSuccess(contentResponseDTOList);
+//    }
+
+//    @GetMapping("/recommend/special")
+//    public ApiResponse<List<Content>> recommendBySituation(@RequestParam String genre){
+//
+//    }

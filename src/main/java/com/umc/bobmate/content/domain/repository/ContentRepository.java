@@ -4,6 +4,7 @@ import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.ContentType;
 import java.util.List;
 
+import com.umc.bobmate.content.domain.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,10 +19,22 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     List<Content> findTop3ContentsByLikesAndType(@Param("contentType") ContentType contentType);
 
 
+    // 컨텐츠에서 type 기준으로 컨텐츠 가져오기
     @Query("SELECT c FROM Content c WHERE c.type = :type")
     List<Content> findByType(@Param("type") ContentType type);
 
+    // comment에서 장르 가지고 오기
+//    @Query("SELECT c FROM Content c WHERE c.genreList=:genre")
+//    List<Content> findByGenre(@Param("genre") Genre genre);
+
+//    @Query("SELECT c FROM Content c WHERE c.genre=:genre " +
+//            "AND c.type = :type")
+//    List<Content> findByGenreAndType(@Param("genre") Genre genre,
+//                                     @Param("type") ContentType type);
+
+
 }
+
     //    @Query("SELECT c FROM Content c " +
     //            "LEFT JOIN FETCH c.likes " +
     //            "GROUP BY c.id " +
