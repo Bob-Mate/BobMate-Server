@@ -1,4 +1,4 @@
-package com.umc.bobmate.login.oauth.dto.info;
+package com.umc.bobmate.login.oauth.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +11,8 @@ public class NaverInfoResponse implements OAuthInfoResponse {
 
     @JsonProperty("response")
     private Response response;
+
+    private String accessToken;
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -42,5 +44,14 @@ public class NaverInfoResponse implements OAuthInfoResponse {
     @Override
     public OAuthProvider getOAuthProvider() {
         return OAuthProvider.NAVER;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    @Override
+    public String getAccessToken() {
+        return accessToken;
     }
 }

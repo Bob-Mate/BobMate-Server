@@ -152,10 +152,10 @@ class MemberControllerTest {
                                 fieldWithPath("isSuccess").type(BOOLEAN).description("성공 여부"),
                                 fieldWithPath("code").type(STRING).description("결과 코드"),
                                 fieldWithPath("message").type(STRING).description("결과 메세지"),
-                                fieldWithPath("result").type(OBJECT).description("결과 데이터"),
-                                fieldWithPath("result.emotion").type(STRING).description("감정: 현재 입력된 코멘트가 없으면 null이 반환됨."),
-                                fieldWithPath("result.food").type(STRING).description("음식: 현재 입력된 코멘트가 없으면 null이 반환됨."),
-                                fieldWithPath("result.genre").type(STRING).description("장르: 현재 입력된 코멘트가 없으면 null이 반환됨.")
+                                fieldWithPath("result").type(OBJECT).description("결과 데이터").optional(),
+                                fieldWithPath("result.emotion").type(STRING).description("감정: 현재 입력된 코멘트가 없으면 null이 반환됨.").optional(),
+                                fieldWithPath("result.food").type(STRING).description("음식: 현재 입력된 코멘트가 없으면 null이 반환됨.").optional(),
+                                fieldWithPath("result.genre").type(STRING).description("장르: 현재 입력된 코멘트가 없으면 null이 반환됨.").optional()
                         )
                 ));
     }

@@ -1,8 +1,8 @@
 package com.umc.bobmate.login.oauth.service;
 
 import com.umc.bobmate.login.oauth.client.OAuthApiClient;
-import com.umc.bobmate.login.oauth.dto.info.OAuthInfoResponse;
 import com.umc.bobmate.login.oauth.dto.param.OAuthLoginParams;
+import com.umc.bobmate.login.oauth.dto.response.OAuthInfoResponse;
 import com.umc.bobmate.member.domain.OAuthProvider;
 import org.springframework.stereotype.Component;
 
@@ -25,5 +25,10 @@ public class RequestOAuthInfoService {
         OAuthApiClient client = clients.get(params.oAuthProvider());
         String accessToken = client.requestAccessToken(params);
         return client.requestOauthInfo(accessToken);
+    }
+
+    public void unlink(OAuthProvider oAuthProvider, String socialAccessToken) {
+        final OAuthApiClient oAuthApiClient = clients.get(oAuthProvider);
+        oAuthApiClient.requestUnlink(socialAccessToken);
     }
 }

@@ -19,6 +19,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -51,6 +52,9 @@ public class Member extends BaseEntity {
 
     private String socialId;
 
+    @Setter
+    private String socialAccessToken;
+
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "Preference",
@@ -68,12 +72,14 @@ public class Member extends BaseEntity {
             final String name,
             final String socialId,
             final String imageUrl,
-            final OAuthProvider oAuthProvider
+            final OAuthProvider oAuthProvider,
+            final String socialAccessToken
     ) {
         this.name = name;
         this.socialId = socialId;
         this.imageUrl = imageUrl;
         this.oAuthProvider = oAuthProvider;
+        this.socialAccessToken = socialAccessToken;
     }
 
     public void modifyPreference(final List<String> preferenceList) {
