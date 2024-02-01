@@ -5,12 +5,14 @@ import com.umc.bobmate.login.jwt.token.AuthTokens;
 import com.umc.bobmate.login.oauth.dto.param.KakaoLoginParams;
 import com.umc.bobmate.login.oauth.dto.param.NaverLoginParams;
 import com.umc.bobmate.login.service.OAuthLoginService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import static com.umc.bobmate.member.domain.OAuthProvider.KAKAO;
 import static com.umc.bobmate.member.domain.OAuthProvider.NAVER;
 
+@Hidden
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")

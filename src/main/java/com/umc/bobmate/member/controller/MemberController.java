@@ -8,6 +8,7 @@ import com.umc.bobmate.member.dto.response.CommentResponse;
 import com.umc.bobmate.member.dto.response.EditPageResponse;
 import com.umc.bobmate.member.dto.response.PreferenceResponse;
 import com.umc.bobmate.member.service.MemberService;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
+@Hidden
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
