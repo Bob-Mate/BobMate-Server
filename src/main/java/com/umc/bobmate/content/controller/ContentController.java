@@ -61,7 +61,7 @@ public class ContentController {
     }
 
     @PostMapping("/unlike")
-    @Operation(summary = "콘텐츠 찜 취소", description = "Authorization 헤더 필요", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "콘텐츠 찜 취소하기", description = "Authorization 헤더 필요", security = @SecurityRequirement(name = "Authorization"))
     @Parameter(name = "contentId", description = "콘텐츠 ID")
     public ApiResponse<Void> unlikeContent(@RequestParam("contentId") Long contentId) {
         try {
