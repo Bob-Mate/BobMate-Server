@@ -14,6 +14,7 @@ import static com.umc.bobmate.member.domain.OAuthProvider.NAVER;
 
 @Hidden
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
