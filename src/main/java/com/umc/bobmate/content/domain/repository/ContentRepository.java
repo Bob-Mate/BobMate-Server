@@ -23,23 +23,20 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     @Query("SELECT c FROM Content c WHERE c.type = :type")
     List<Content> findByType(@Param("type") ContentType type);
 
-    // comment에서 장르 가지고 오기
-//    @Query("SELECT c FROM Content c WHERE c.genreList=:genre")
-//    List<Content> findByGenre(@Param("genre") Genre genre);
+    @Query("SELECT c FROM Content c " +
+            "INNER JOIN Evaluation e on c.id = e.id where e.isGood=true")
+    List<Content> recommendAgain();
 
-//    @Query("SELECT c FROM Content c WHERE c.genre=:genre " +
-//            "AND c.type = :type")
-//    List<Content> findByGenreAndType(@Param("genre") Genre genre,
-//                                     @Param("type") ContentType type);
+    @Query("SELECT c FROM Content c " +
+            "INNER JOIN Evaluation e ON c.id = e.id WHERE e.isGood <> false")
+    List<Content> findContentWithBadEvaluation();
 
+    // Long findById();
+
+    //@Query("SELECT c FROM Content c WHERE")
+    // List<Content> findContentsByTypeAndGenreList();
 
 }
-
-    //    @Query("SELECT c FROM Content c " +
-    //            "LEFT JOIN FETCH c.likes " +
-    //            "GROUP BY c.id " +
-    //            "ORDER BY COUNT(c.likes) DESC")
-    //    List<Content> findTop3ContentsByLikes();
 
 
 

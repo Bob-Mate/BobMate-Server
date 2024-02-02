@@ -9,9 +9,11 @@ import com.umc.bobmate.content.domain.Emotion;
 import com.umc.bobmate.content.domain.Genre;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.umc.bobmate.content.dto.ContentResponseDTO;
@@ -150,6 +152,10 @@ public class ContentService {
                 .genreList(content.getGenreList())
                 .emotionList(content.getEmotionList())
                 .build();
+    }
+
+    public Optional<Content> getContentById(Long contentId) {
+        return contentRepository.findById(contentId);
     }
 
 //    private List<Content> recommendSpecialSituationForId1(ContentType type) {

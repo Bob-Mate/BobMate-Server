@@ -17,6 +17,7 @@ public class ContentResponseDTO {
     private String linkUrl;
     private List<String> genreList;
     private List<String> emotionList;
+    private Long memberId;
 }
 
 //    public static ContentResponse from(Content content){

@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.service.LikeService;
+import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,18 @@ import org.springframework.web.bind.annotation.*;
 import com.umc.bobmate.content.domain.ContentType;
 import com.umc.bobmate.global.apiPayload.ApiResponse;
 
+import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
+import static com.umc.bobmate.global.apiPayload.code.status.SuccessStatus._OK;
+
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/contents")
 @RequiredArgsConstructor
 public class ContentController {
     private final ContentService contentService;
     private final ContentService commentService;
     private final ContentRepository contentRepository;
+    private final AuthTokensGenerator authTokensGenerator;
 
     // 일반상황으로 컨텐츠 추천
     @GetMapping("/recommend/daily")
@@ -37,48 +44,62 @@ public class ContentController {
                                                                   @RequestParam ContentType contentType) {
 
         // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
-        List<Content> recommendedContents = contentService.recommendContents(emotion, withWhom, contentType);
+        try {
+            Long memberId = authTokensGenerator.getLoginMemberId();
+            List<Content> recommendedContents = contentService.recommendContents(emotion, withWhom, contentType);
 
-        // ContentResponseDTO로 변환
-        List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()
-                .map(content -> ContentResponseDTO.builder()
-                        .contentId(content.getId())
-                        .name(content.getName())
-                        .imgUrl(content.getImgUrl())
-                        .linkUrl(content.getLinkUrl())
-                        .type(content.getType())
-                        .genreList(content.getGenreList())
-                        .emotionList(content.getEmotionList())
-                        .build())
-                .collect(Collectors.toList());
+            // ContentResponseDTO로 변환
+            List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()
+                    .map(content -> ContentResponseDTO.builder()
+                            .contentId(content.getId())
+                            .memberId(memberId)
+                            .name(content.getName())
+                            .imgUrl(content.getImgUrl())
+                            .linkUrl(content.getLinkUrl())
+                            .type(content.getType())
+                            .genreList(content.getGenreList())
+                            .emotionList(content.getEmotionList())
+                            .build())
+                    .collect(Collectors.toList());
 
-        // ApiResponse를 이용하여 응답 생성 및 반환
-        return ApiResponse.onSuccess(contentResponseDTOList);
+            return ApiResponse.onSuccess(contentResponseDTOList);
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
     }
-
 
     // 특별상황으로 컨텐츠 추천
     @GetMapping("/recommend/special")
-    public ApiResponse<List<ContentResponseDTO>> recommendByGenre(CommentResponseDTO dto,
-                                                                  @RequestParam ContentType type) {
+    public ApiResponse<List<ContentResponseDTO>> recommendByGenre(
+            CommentResponseDTO dto,
+            @RequestParam ContentType type) {
         // 주어진 감정과 음식으로 가장 많이 등장한 장르 추출
-        Genre recommendedGenre = dto.getGenre();
-        List<Content> recommendedContents = contentService.findSpecialContent(dto, type);
 
-        List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()
-                .map(content -> ContentResponseDTO.builder()
-                        .contentId(content.getId())
-                        .name(content.getName())
-                        .imgUrl(content.getImgUrl())
-                        .linkUrl(content.getLinkUrl())
-                        .type(content.getType())
-                        .genreList(content.getGenreList())
-                        .emotionList(content.getEmotionList())
-                        .build())
-                .collect(Collectors.toList());
+        try{
+           // Genre recommendedGenre = dto.getGenre();
+          //  List<Content> contents = contentRepository.findContentsByTypeAndGenreList();
 
-        // 추천된 컨텐츠를 반환합니다.
-        return ApiResponse.onSuccess(contentResponseDTOList);
+            List<Content> recommendedContents = contentService.findSpecialContent(dto, type);
+
+            List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()
+                    .map(content -> ContentResponseDTO.builder()
+                            .contentId(content.getId())
+                            .name(content.getName())
+                            .imgUrl(content.getImgUrl())
+                            .linkUrl(content.getLinkUrl())
+                            .type(content.getType())
+                            .genreList(content.getGenreList())
+                            .emotionList(content.getEmotionList())
+                            .build())
+                    .collect(Collectors.toList());
+
+            // 추천된 컨텐츠를 반환합니다.
+            return ApiResponse.onSuccess(contentResponseDTOList);
+        }  catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
+
+
     }
 }
 

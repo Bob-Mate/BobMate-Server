@@ -28,7 +28,7 @@ public class CommentController {
     private final ContentRepository contentRepository;
 
     // 가장 많은 음식+감정의 것을 리턴 -> 특별한 상황 반영을 위한 comment 내용 전달
-    @PostMapping("/situation")
+    @PostMapping("/create")
     public ApiResponse<List<CommentResponseDTO>> getCommentsByFoodAndEmotion(
             @RequestParam String food,
             @RequestParam Emotion emotion,
@@ -50,6 +50,7 @@ public class CommentController {
         return ApiResponse.onSuccess(comment);
 
     }
+
 
 
 
