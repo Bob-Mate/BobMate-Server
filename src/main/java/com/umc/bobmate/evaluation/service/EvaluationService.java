@@ -59,7 +59,7 @@ public class EvaluationService {
             Evaluation evaluation = Evaluation.builder()
                     .isGood(dto.isGood())
                     .member(authTokensGenerator.getLoginMember())
-                    .content(dto.getContentId())
+                    .content(dto.getContent())
                     .build();
 
             // Save the Evaluation entity using the repository

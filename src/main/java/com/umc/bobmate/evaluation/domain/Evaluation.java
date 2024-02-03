@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -21,7 +23,8 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity
 @Getter
 @DynamicInsert
-
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class Evaluation extends BaseEntity {
 
