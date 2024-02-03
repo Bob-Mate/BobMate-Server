@@ -1,12 +1,9 @@
 package com.umc.bobmate.evaluation.service;
 
-import com.umc.bobmate.content.dto.ContentResponseDTO;
 import com.umc.bobmate.evaluation.domain.Evaluation;
 import com.umc.bobmate.evaluation.domain.repository.EvaluationRepository;
 import com.umc.bobmate.evaluation.dto.EvaluationRequestDTO;
-import com.umc.bobmate.evaluation.dto.EvaluationResponseDTO;
 import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
-import com.umc.bobmate.member.domain.Member;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

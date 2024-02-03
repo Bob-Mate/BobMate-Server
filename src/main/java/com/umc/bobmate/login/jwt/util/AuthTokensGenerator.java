@@ -6,6 +6,7 @@ import com.umc.bobmate.member.domain.Member;
 import com.umc.bobmate.member.domain.repository.MemberRepository;
 import com.umc.bobmate.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -45,6 +46,7 @@ public class AuthTokensGenerator {
         HttpServletRequest httpServletRequest
                 = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         final String accessToken = httpServletRequest.getHeader("Authorization");
+        System.out.println("Received accessToken: " + accessToken);  // 확인용 로그 추가
         return extractMemberId(accessToken);
     }
 

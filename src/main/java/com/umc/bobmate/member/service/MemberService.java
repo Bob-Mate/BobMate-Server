@@ -1,5 +1,8 @@
 package com.umc.bobmate.member.service;
 
+import com.umc.bobmate.member.domain.Member;
+import com.umc.bobmate.member.domain.repository.MemberRepository;
+import java.util.List;
 import com.umc.bobmate.comment.domain.Comment;
 import com.umc.bobmate.comment.domain.repository.CommentRepository;
 import com.umc.bobmate.global.apiPayload.exception.GeneralException;
@@ -19,8 +22,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus.INVALID_MEMBER_ID;
 

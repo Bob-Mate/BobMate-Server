@@ -9,16 +9,17 @@ import com.umc.bobmate.content.domain.Emotion;
 import com.umc.bobmate.content.domain.Genre;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.umc.bobmate.content.dto.ContentResponseDTO;
+import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.content.dto.ContentSpecialSituationResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +30,22 @@ public class ContentService {
     private final ContentRepository contentRepository;
     private final CommentRepository commentRepository;
 
-//    public List<ContentResponseDTO> getTop3Contents(ContentType contentType) {
-//        return contentRepository.findTop3ContentsByLikesAndType(contentType).stream()
-//                .map(content -> ContentResponseDTO.builder().contentId(content.getId()).name(content.getName())
-//                        .imgUrl(content.getImgUrl()).linkUrl(content.getLinkUrl()).build())
-//                .collect(Collectors.toList());
-//    }
+    public List<ContentResponse> getTop3ContentsByLikes(ContentType contentType) {
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Content> top3Contents = contentRepository.findTop3ByOrderByLikesCountDesc(contentType, pageable);
+        return top3Contents.stream()
+                .map(this::mapContentToResponse)
+                .collect(Collectors.toList());
+    }
+
+    private ContentResponse mapContentToResponse(Content content) {
+        return ContentResponse.builder()
+                .contentId(content.getId())
+                .name(content.getName())
+                .imgUrl(content.getImgUrl())
+                .linkUrl(content.getLinkUrl())
+                .build();
+    }
 
 
     @Transactional
@@ -49,31 +60,31 @@ public class ContentService {
                 switch (emotion) {
                     case "GLAD":
                         if (content.getGenreList().contains("COMEDY") || content.getGenreList().contains("ANIMATION") || content.getGenreList().contains("ROMANCE")) {
-                            if (recommend.size()<3) recommend.add(content);
+                            if (recommend.size() < 3) recommend.add(content);
                         }
                         break;
 
                     case "EXCITED":
                         if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("ROMANTIC_COMEDY") || content.getGenreList().contains("ROMANCE")) {
-                            if (recommend.size()<3) recommend.add(content);
+                            if (recommend.size() < 3) recommend.add(content);
                         }
                         break;
 
                     case "GLOOMY":
                         if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("ANIMATION")) {
-                            if (recommend.size()<3) recommend.add(content);
+                            if (recommend.size() < 3) recommend.add(content);
                         }
                         break;
 
                     case "ANGRY":
                         if (content.getGenreList().contains("ACTION") || content.getGenreList().contains("THRILLER") || content.getGenreList().contains("CRIME")) {
-                            if (recommend.size()<3) recommend.add(content);
+                            if (recommend.size() < 3) recommend.add(content);
                         }
                         break;
 
                     case "SAD":
                         if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ROMANCE") || content.getGenreList().contains("FAMILY")) {
-                            if (recommend.size()<3) recommend.add(content);
+                            if (recommend.size() < 3) recommend.add(content);
                         }
                         break;
                 }
@@ -92,7 +103,7 @@ public class ContentService {
         for (Content content : recommendedContents) {
             List<String> genreList = content.getGenreList();
             if (genreList.contains(genre)) { //해당 컨텐츠의 장르 리스트에 뽑은 장르가 포함되면 그 컨텐츠 추천
-                if(recommend.size()<3) recommend.add(content);
+                if (recommend.size() < 3) recommend.add(content);
             }
         }
         return recommend;
@@ -116,7 +127,21 @@ public class ContentService {
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
+}
+//    public List<ContentResponse> getLikedContentsByMember(Long memberId) {
+//        List<Content> likedContents = contentRepository.findByLikesMemberId(memberId);
+//        return likedContents.stream()
+//                .map(this::mapContentToResponse)
+//                .collect(Collectors.toList());
+//    }
 
+//    public List<ContentResponse> getTop3Contents(ContentType contentType) {
+//        Pageable pageable = PageRequest.of(0, 3);
+//        return contentRepository.findTop3ContentsByLikesAndType(contentType, pageable).stream()
+//                .map(content -> ContentResponse.builder().contentId(content.getId()).name(content.getName())
+//                        .imgUrl(content.getImgUrl()).linkUrl(content.getLinkUrl()).build())
+//                .collect(Collectors.toList());
+//    }
 
 //    @Transactional
 //    public Content recommendContent(String emotion, Genre genre) {
@@ -142,21 +167,21 @@ public class ContentService {
 //        return recommend;
 //    }
 
-    public ContentSpecialSituationResponse mapContentToResponseDTO(Content content) {
-        return ContentSpecialSituationResponse.builder()
-                .contentId(content.getId())
-                .name(content.getName())
-                .type(content.getType())
-                .imgUrl(content.getImgUrl())
-                .linkUrl(content.getLinkUrl())
-                .genreList(content.getGenreList())
-                .emotionList(content.getEmotionList())
-                .build();
-    }
+//    public ContentSpecialSituationResponse mapContentToResponseDTO(Content content) {
+//        return ContentSpecialSituationResponse.builder()
+//                .contentId(content.getId())
+//                .name(content.getName())
+//                .type(content.getType())
+//                .imgUrl(content.getImgUrl())
+//                .linkUrl(content.getLinkUrl())
+//                .genreList(content.getGenreList())
+//                .emotionList(content.getEmotionList())
+//                .build();
+//    }
 
-    public Optional<Content> getContentById(Long contentId) {
-        return contentRepository.findById(contentId);
-    }
+//    public Optional<Content> getContentById (Long contentId) {
+//        return contentRepository.findById(contentId);
+//    }
 
 //    private List<Content> recommendSpecialSituationForId1(ContentType type) {
 //        // 상황 1에 대한 로직
@@ -252,7 +277,7 @@ public class ContentService {
 //                .linkUrl(content.getLinkUrl())
 //                .build();
 //    }
-}
+
 
 
 //for(Content c : recommendedContents){

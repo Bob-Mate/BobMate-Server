@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ContentResponseDTO {
+public class ContentResponse {
 
     private Long contentId;
     private String name;

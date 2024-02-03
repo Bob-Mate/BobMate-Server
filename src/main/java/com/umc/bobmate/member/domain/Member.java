@@ -1,18 +1,30 @@
 package com.umc.bobmate.member.domain;
 
 import com.umc.bobmate.common.BaseEntity;
+import com.umc.bobmate.like.domain.Likes;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PROTECTED;
+
 
 @Entity
 @Getter
@@ -42,6 +54,9 @@ public class Member extends BaseEntity {
 
     private String socialId;
 
+    @Setter
+    private String socialAccessToken;
+
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "Preference",
@@ -50,17 +65,23 @@ public class Member extends BaseEntity {
     @Column(name = "memo")
     private List<String> preferenceList = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "member")
+    private List<Likes> likes = new ArrayList<>();
+
     @Builder
     public Member(
             final String name,
             final String socialId,
             final String imageUrl,
-            final OAuthProvider oAuthProvider
+            final OAuthProvider oAuthProvider,
+            final String socialAccessToken
     ) {
         this.name = name;
         this.socialId = socialId;
         this.imageUrl = imageUrl;
         this.oAuthProvider = oAuthProvider;
+        this.socialAccessToken = socialAccessToken;
     }
 
     public void modifyPreference(final List<String> preferenceList) {

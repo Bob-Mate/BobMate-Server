@@ -3,7 +3,7 @@ import lombok.Builder;
 import lombok.Getter;
 @Getter
 @Builder
-public class ContentRequestDTO {
+public class ContentRequest {
     private String emotion;
     private String contentType;
     private String withWhom;

@@ -5,25 +5,21 @@ import com.umc.bobmate.comment.domain.repository.CommentRepository;
 import com.umc.bobmate.comment.dto.CommentRequestDTO;
 import com.umc.bobmate.comment.dto.CommentResponseDTO;
 import com.umc.bobmate.comment.service.CommentService;
-import com.umc.bobmate.content.domain.Content;
-import com.umc.bobmate.content.domain.ContentType;
-import com.umc.bobmate.content.domain.Emotion;
-import com.umc.bobmate.content.domain.Genre;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
-import com.umc.bobmate.content.dto.ContentResponseDTO;
 import com.umc.bobmate.global.apiPayload.ApiResponse;
 import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
 
+
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/Comment")
 public class CommentController {
