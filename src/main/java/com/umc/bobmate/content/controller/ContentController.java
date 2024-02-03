@@ -45,14 +45,12 @@ public class ContentController {
 
         // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
         try {
-            Long memberId = authTokensGenerator.getLoginMemberId();
             List<Content> recommendedContents = contentService.recommendContents(emotion, withWhom, contentType);
 
             // ContentResponseDTO로 변환
             List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()
                     .map(content -> ContentResponseDTO.builder()
                             .contentId(content.getId())
-                            .memberId(memberId)
                             .name(content.getName())
                             .imgUrl(content.getImgUrl())
                             .linkUrl(content.getLinkUrl())
@@ -76,9 +74,6 @@ public class ContentController {
         // 주어진 감정과 음식으로 가장 많이 등장한 장르 추출
 
         try{
-           // Genre recommendedGenre = dto.getGenre();
-          //  List<Content> contents = contentRepository.findContentsByTypeAndGenreList();
-
             List<Content> recommendedContents = contentService.findSpecialContent(dto, type);
 
             List<ContentResponseDTO> contentResponseDTOList = recommendedContents.stream()

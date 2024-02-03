@@ -23,6 +23,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     @Query("SELECT c FROM Content c WHERE c.type = :type")
     List<Content> findByType(@Param("type") ContentType type);
 
+    // 추천누른 컨텐츠 다시 추천해주는 쿼리문 작성
     @Query("SELECT c FROM Content c " +
             "INNER JOIN Evaluation e on c.id = e.id where e.isGood=true")
     List<Content> recommendAgain();
@@ -31,7 +32,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
             "INNER JOIN Evaluation e ON c.id = e.id WHERE e.isGood <> false")
     List<Content> findContentWithBadEvaluation();
 
-    // Long findById();
 
     //@Query("SELECT c FROM Content c WHERE")
     // List<Content> findContentsByTypeAndGenreList();

@@ -27,22 +27,32 @@ import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQ
 @RequestMapping("/api/v1/evaluations")
 public class EvaluationController {
 
-//    private EvaluationService evaluationService;
-//    AuthTokensGenerator authTokensGenerator;
-//
-//    @Autowired
-//    public void setEvaluationService(EvaluationService evaluationService) {
-//        this.evaluationService = evaluationService;
-//    }
-//
-//    //     Evaluation 처리만 하면 되고 그 결과를 contentCOntroller에서 처리하기
+    private EvaluationService evaluationService;
+    AuthTokensGenerator authTokensGenerator;
+
+    @Autowired
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
+
+    //Evaluation 처리만 하면 되고 그 결과를 contentCOntroller에서 처리하기
 //    @PostMapping("/makeEvaluations")
 //    public ApiResponse<List<EvaluationResponseDTO>> evaluateContents(
 //            @RequestBody List<EvaluationRequestDTO> dtos) {
 //
 //        try {
 //            // Call the service to save the evaluations
-//            List<EvaluationResponseDTO> responseDTOs = evaluationService.saveEvaluations(dtos);
+//
+//            List<Evaluation> eval = evaluationService.saveEvaluations(dtos);
+//
+//            List<EvaluationResponseDTO> responseDTOs = eval.stream()
+//                    .map(evaluation -> EvaluationResponseDTO.builder()
+//                            .contentId(evaluation.getContent().getId())
+//                            .memberId(authTokensGenerator.getLoginMemberId())
+//                            .isGood(evaluation.isGood())
+//                            .build())
+//                    .collect(Collectors.toList());
+//
 //
 //            return ApiResponse.onSuccess(responseDTOs);
 //        } catch (Exception e) {
