@@ -11,7 +11,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class EvaluationRequestDTO {
-    private Long memberId;
+//    private Long memberId;
+//    private boolean isGood;
+//    private Long contentId;
+
+    private Member memberId;
+    private Content contentId;
     private boolean isGood;
-    private Long contentId;
 }

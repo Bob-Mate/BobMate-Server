@@ -43,8 +43,8 @@ public class EvaluationController {
 
             List<EvaluationResponseDTO> responseDTOs = eval.stream()
                     .map(evaluation -> EvaluationResponseDTO.builder()
-                            .contentId(evaluation.getContent().getId())
-                            .memberId(authTokensGenerator.getLoginMemberId())
+                            .contentId(evaluation.getContent())
+                            .memberId(evaluation.getMember())
                             .isGood(evaluation.isGood())
                             .build())
                     .collect(Collectors.toList());

@@ -4,6 +4,7 @@ import com.umc.bobmate.evaluation.domain.Evaluation;
 import com.umc.bobmate.evaluation.domain.repository.EvaluationRepository;
 import com.umc.bobmate.evaluation.dto.EvaluationRequestDTO;
 import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
+import com.umc.bobmate.member.service.MemberService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import java.util.List;
 public class EvaluationService {
     private final AuthTokensGenerator authTokensGenerator;
     private final EvaluationRepository evaluationRepository;
+    private final MemberService memberRepository;
 
 
-    public EvaluationService(AuthTokensGenerator authTokensGenerator, EvaluationRepository evaluationRepository) {
+    public EvaluationService(AuthTokensGenerator authTokensGenerator, EvaluationRepository evaluationRepository, MemberService memberRepository) {
         this.authTokensGenerator = authTokensGenerator;
         this.evaluationRepository = evaluationRepository;
+        this.memberRepository = memberRepository;
     }
 
 
@@ -56,10 +59,11 @@ public class EvaluationService {
         // Long contentId = contentService.recommendContents().get(0);
         for (EvaluationRequestDTO dto : dtos) {
             // Create an Evaluation entity using the builder pattern
+
             Evaluation evaluation = Evaluation.builder()
                     .isGood(dto.isGood())
-                    .member(authTokensGenerator.getLoginMember())
-                    .content(dto.getContent())
+                    .member(dto.getMemberId())
+                    .content(dto.getContentId())
                     .build();
 
             // Save the Evaluation entity using the repository
