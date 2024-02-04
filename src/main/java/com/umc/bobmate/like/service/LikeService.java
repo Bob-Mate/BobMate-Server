@@ -12,6 +12,7 @@ import com.umc.bobmate.menu.domain.repository.MenuRepository;
 import com.umc.bobmate.menu.dto.MenuResponse;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -122,7 +123,11 @@ public class LikeService {
         List<Likes> likes = likeRepository.findByMember(member);
 
         List<ContentResponse> likedContents = likes.stream()
-                .map(like -> mapContentToResponse(like.getContent()))
+                .map(like -> {
+                    Content content = like.getContent();
+                    return content != null ? mapContentToResponse(content) : null;
+                })
+                .filter(Objects::nonNull) // 필터링하여 null인 항목은 제외
                 .collect(Collectors.toList());
 
         return likedContents;
@@ -135,7 +140,11 @@ public class LikeService {
         List<Likes> likes = likeRepository.findByMember(member);
 
         List<MenuResponse> likedMenus = likes.stream()
-                .map(like -> mapMenuToResponse(like.getMenu()))
+                .map(like -> {
+                    Menu menu = like.getMenu();
+                    return menu != null ? mapMenuToResponse(menu) : null;
+                })
+                .filter(Objects::nonNull) // 필터링하여 null인 항목은 제외
                 .collect(Collectors.toList());
 
         return likedMenus;

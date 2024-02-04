@@ -34,6 +34,7 @@ public class LikeController {
             Long memberId = authTokensGenerator.getLoginMemberId();
             return ApiResponse.onSuccess(likeService.getLikedContents(memberId));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GeneralException(_BAD_REQUEST);
         }
     }
@@ -45,6 +46,7 @@ public class LikeController {
             Long memberId = authTokensGenerator.getLoginMemberId();
             return ApiResponse.onSuccess(likeService.getLikedMenus(memberId));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GeneralException(_BAD_REQUEST);
         }
     }
