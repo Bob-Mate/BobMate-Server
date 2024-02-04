@@ -3,6 +3,7 @@ package com.umc.bobmate.like.service;
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
 import com.umc.bobmate.content.dto.ContentResponse;
+import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.domain.Likes;
 import com.umc.bobmate.like.domain.repository.LikeRepository;
 import com.umc.bobmate.member.domain.Member;
@@ -110,7 +111,8 @@ public class LikeService {
 
         // 좋아요 엔티티 조회
         Likes like = likeRepository.findByMemberAndMenu(member, menu)
-                .orElseThrow(() -> new EntityNotFoundException("Likes not found for Member ID: " + memberId + " and Menu ID: " + menuId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Likes not found for Member ID: " + memberId + " and Menu ID: " + menuId));
 
         // 좋아요 취소
         likeRepository.delete(like);
@@ -149,7 +151,6 @@ public class LikeService {
 
         return likedMenus;
     }
-
 
     private ContentResponse mapContentToResponse(Content content) {
         return ContentResponse.builder()
