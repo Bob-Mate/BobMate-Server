@@ -2,7 +2,7 @@ package com.umc.bobmate.like.service;
 
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
-import com.umc.bobmate.content.dto.ContentResponse;
+import com.umc.bobmate.content.dto.ContentDailyResponse;
 import com.umc.bobmate.like.domain.Likes;
 import com.umc.bobmate.like.domain.repository.LikeRepository;
 import com.umc.bobmate.member.domain.Member;
@@ -13,7 +13,6 @@ import com.umc.bobmate.menu.domain.repository.MenuRepository;
 import com.umc.bobmate.menu.dto.MenuResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,13 +118,13 @@ public class LikeService {
         likeRepository.delete(like);
     }
 
-    public List<ContentResponse> getLikedContents(Long memberId) {
+    public List<ContentDailyResponse> getLikedContents(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + memberId));
 
         List<Likes> likes = likeRepository.findByMember(member);
 
-        List<ContentResponse> likedContents = likes.stream()
+        List<ContentDailyResponse> likedContents = likes.stream()
                 .map(like -> mapContentToResponse(like.getContent()))
                 .collect(Collectors.toList());
 
@@ -146,8 +145,8 @@ public class LikeService {
     }
 
 
-    private ContentResponse mapContentToResponse(Content content) {
-        return ContentResponse.builder()
+    private ContentDailyResponse mapContentToResponse(Content content) {
+        return ContentDailyResponse.builder()
                 .contentId(content.getId())
                 .name(content.getName())
                 .imgUrl(content.getImgUrl())

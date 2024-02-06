@@ -19,12 +19,14 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
+@Setter
 @DynamicInsert
 @NoArgsConstructor(access = PROTECTED)
 @SQLRestriction("status = 'ACTIVE'")
@@ -53,5 +55,13 @@ public class Comment extends BaseEntity {
         this.genre = genre;
         this.food = food;
         this.member = member;
+    }
+
+    public void show(){
+        System.out.println("heeju test " + genre);
+        System.out.println("heeju test " + emotion);
+        System.out.println("heeju test " + food);
+        System.out.println("heeju test " + id);
+
     }
 }

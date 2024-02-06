@@ -1,60 +1,63 @@
 package com.umc.bobmate.evaluation.controller;
 
 import com.umc.bobmate.evaluation.domain.Evaluation;
+import com.umc.bobmate.evaluation.domain.repository.EvaluationRepository;
 import com.umc.bobmate.evaluation.dto.EvaluationRequestDTO;
-import com.umc.bobmate.evaluation.dto.EvaluationResponseDTO;
 import com.umc.bobmate.evaluation.service.EvaluationService;
 import com.umc.bobmate.global.apiPayload.ApiResponse;
 import com.umc.bobmate.global.apiPayload.exception.GeneralException;
-import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
+import static com.umc.bobmate.global.apiPayload.code.status.SuccessStatus._OK;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/evaluations")
+@RequestMapping("/api/v1/evaluation")
+@Slf4j
 public class EvaluationController {
 
-    private EvaluationService evaluationService;
-    AuthTokensGenerator authTokensGenerator;
+    private final EvaluationService evaluationService;
+    private final EvaluationRepository evaluationRepository;
 
-    @Autowired
-    public void setEvaluationService(EvaluationService evaluationService) {
-        this.evaluationService = evaluationService;
-    }
-
-    //Evaluation 처리만 하면 되고 그 결과를 contentCOntroller에서 처리하기
-    @PostMapping("/makeEvaluations")
-    public ApiResponse<List<EvaluationResponseDTO>> evaluateContents(
-            @RequestBody List<EvaluationRequestDTO> dtos) {
+    //Evaluation 처리만 하면 되고 그 결과를 Controller에서 처리하기
+    @PostMapping("/create")
+    public ApiResponse<Void> evaluateContents(@RequestBody EvaluationRequestDTO dto) {
 
         try {
-            // Call the service to save the evaluations
-
-            List<Evaluation> eval = evaluationService.saveEvaluations(dtos);
-
-            List<EvaluationResponseDTO> responseDTOs = eval.stream()
-                    .map(evaluation -> EvaluationResponseDTO.builder()
-                            .contentId(evaluation.getContent())
-                            .memberId(evaluation.getMember())
-                            .isGood(evaluation.isGood())
-                            .build())
-                    .collect(Collectors.toList());
-
-
-            return ApiResponse.onSuccess(responseDTOs);
+            // 평가 엔티티를 저장하는게 끝 - 리포지토리(데이터베이스에) 그러고 끝
+            evaluationService.saveEvaluation(dto);
+            return ApiResponse.of(_OK);
         } catch (Exception e) {
             throw new GeneralException(_BAD_REQUEST);
         }
     }
-}
 
+    @PatchMapping("/update/{id}")
+    public ApiResponse<Void> updateEvaluate(@PathVariable Long id, @RequestBody EvaluationRequestDTO dto) {
+
+        try {
+            // 평가 엔티티를 저장하는게 끝 - 리포지토리(데이터베이스에) 그러고 끝
+            evaluationService.updateEvaluation(id, dto);
+            return ApiResponse.of(_OK);
+        } catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ApiResponse<Void> deleteEvaluation(@PathVariable Long id){
+        try{
+            evaluationService.deleteEvaluationById(id);
+            return ApiResponse.of(_OK);
+        } catch (Exception e){
+            throw new GeneralException(_BAD_REQUEST);
+        }
+    }
+
+}
 

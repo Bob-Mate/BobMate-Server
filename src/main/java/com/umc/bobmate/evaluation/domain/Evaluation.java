@@ -35,8 +35,6 @@ public class Evaluation extends BaseEntity {
 
     private boolean isGood;
 
-    private Long score;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -45,4 +43,15 @@ public class Evaluation extends BaseEntity {
     @JoinColumn(name = "content_id")
     private Content content;
 
+    public void setMember(Member member){
+        this.member=member;
+    }
+
+    public void setContent(Content content){
+        this.content=content;
+    }
+
+    public void setGood(Boolean isGood){
+        this.isGood=isGood;
+    }
 }

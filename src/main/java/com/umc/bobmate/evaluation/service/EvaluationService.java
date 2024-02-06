@@ -1,83 +1,61 @@
 package com.umc.bobmate.evaluation.service;
 
+import com.umc.bobmate.content.domain.Content;
+import com.umc.bobmate.content.domain.repository.ContentRepository;
 import com.umc.bobmate.evaluation.domain.Evaluation;
 import com.umc.bobmate.evaluation.domain.repository.EvaluationRepository;
 import com.umc.bobmate.evaluation.dto.EvaluationRequestDTO;
 import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
-import com.umc.bobmate.member.service.MemberService;
+import com.umc.bobmate.member.domain.Member;
+import com.umc.bobmate.member.domain.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-
+@RequiredArgsConstructor
 public class EvaluationService {
-    private final AuthTokensGenerator authTokensGenerator;
+
+    private final MemberRepository memberRepository;
     private final EvaluationRepository evaluationRepository;
-    private final MemberService memberRepository;
+    private final ContentRepository contentRepository;
+    private final AuthTokensGenerator authTokensGenerator;
 
+    public void saveEvaluation(EvaluationRequestDTO dto){
+        Long memberId = authTokensGenerator.getLoginMemberId();
 
-    public EvaluationService(AuthTokensGenerator authTokensGenerator, EvaluationRepository evaluationRepository, MemberService memberRepository) {
-        this.authTokensGenerator = authTokensGenerator;
-        this.evaluationRepository = evaluationRepository;
-        this.memberRepository = memberRepository;
+        // 평가 엔티티 생성
+        Evaluation evaluation = Evaluation.builder()
+                .isGood(dto.isGood())
+                .build();
+
+        // 멤버와 컨텐츠 설정
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + memberId));
+        Content content = contentRepository.findById(dto.getContentId())
+                .orElseThrow(() -> new EntityNotFoundException("Content not found with id: " + dto.getContentId()));
+
+        evaluation.setMember(member);
+        evaluation.setContent(content);
+
+        // 평가 저장
+        evaluationRepository.save(evaluation);
     }
 
 
-    // 리턴된 contentResponseDTO의 contentID를 기준으로 평가하기 : 지수한테 카톡후 다른 코드 시도
-//
-//    public List<Evaluation> saveEvaluations(List<EvaluationRequestDTO> dtos, List<ContentResponseDTO> cdtos) {
-//        List<Evaluation> evals = new ArrayList<>();
-//        //Long contentId1 = contentResponseDTO.getContentId();
-//
-//        // Long contentId = contentService.recommendContents().get(0);
-//        for (ContentResponseDTO dto : cdtos) {
-//
-//            for (EvaluationRequestDTO ev : dtos){
-//                Evaluation evaluation = Evaluation.builder()
-//                        .isGood(ev.isGood())
-//                        .member(authTokensGenerator.getLoginMember())
-//                        //.content(ev.getContentId())
-//                        .build();
-//
-//                // Save the Evaluation entity using the repository
-//                Evaluation savedEvaluation = evaluationRepository.save(evaluation);
-//                evals.add(savedEvaluation);
-//            }
-//            // Create an Evaluation entity using the builder pattern
-//
-//        }
-//
-//        return evals;
-//    }
+    public void updateEvaluation(Long id, EvaluationRequestDTO dto) {
 
-    public List<Evaluation> saveEvaluations(List<EvaluationRequestDTO> dtos) {
-        List<Evaluation> evals = new ArrayList<>();
-        //Long contentId1 = contentResponseDTO.getContentId();
-
-        // Long contentId = contentService.recommendContents().get(0);
-        for (EvaluationRequestDTO dto : dtos) {
-            // Create an Evaluation entity using the builder pattern
-
-            Evaluation evaluation = Evaluation.builder()
-                    .isGood(dto.isGood())
-                    .member(dto.getMemberId())
-                    .content(dto.getContentId())
-                    .build();
-
-            // Save the Evaluation entity using the repository
-            Evaluation savedEvaluation = evaluationRepository.save(evaluation);
-            evals.add(savedEvaluation);
+        Evaluation target = evaluationRepository.findEvaluationByContentId(id);
+        if (target != null) {
+            target.setGood(dto.isGood());
+            target.setContent(contentRepository.findById(dto.getContentId()).orElseThrow());
         }
-
-        return evals;
+        evaluationRepository.save(target);
     }
 
-
+    public void deleteEvaluationById(Long id) {
+        Evaluation e = evaluationRepository.findEvaluationByContentId(id);
+        evaluationRepository.delete(e);
+    }
 
 }
-
-
-
-
