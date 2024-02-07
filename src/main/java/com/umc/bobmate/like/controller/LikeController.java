@@ -33,8 +33,10 @@ public class LikeController {
     public ApiResponse<List<ContentDailyResponse>> getLikedContents() {
         try {
             Long memberId = authTokensGenerator.getLoginMemberId();
-            return ApiResponse.onSuccess(likeService.getLikedContents(memberId));
+            List<ContentResponse> likedContents = likeService.getLikedContents(memberId);
+            return ApiResponse.onSuccess(likedContents);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GeneralException(_BAD_REQUEST);
         }
     }
@@ -44,8 +46,10 @@ public class LikeController {
     public ApiResponse<List<MenuResponse>> getLikedMenus() {
         try {
             Long memberId = authTokensGenerator.getLoginMemberId();
-            return ApiResponse.onSuccess(likeService.getLikedMenus(memberId));
+            List<MenuResponse> likedMenus = likeService.getLikedMenus(memberId);
+            return ApiResponse.onSuccess(likedMenus);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GeneralException(_BAD_REQUEST);
         }
     }

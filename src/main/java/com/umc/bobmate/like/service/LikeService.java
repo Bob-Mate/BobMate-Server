@@ -3,6 +3,7 @@ package com.umc.bobmate.like.service;
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
 import com.umc.bobmate.content.dto.ContentDailyResponse;
+import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.domain.Likes;
 import com.umc.bobmate.like.domain.repository.LikeRepository;
 import com.umc.bobmate.member.domain.Member;
@@ -112,7 +113,8 @@ public class LikeService {
 
         // 좋아요 엔티티 조회
         Likes like = likeRepository.findByMemberAndMenu(member, menu)
-                .orElseThrow(() -> new EntityNotFoundException("Likes not found for Member ID: " + memberId + " and Menu ID: " + menuId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Likes not found for Member ID: " + memberId + " and Menu ID: " + menuId));
 
         // 좋아요 취소
         likeRepository.delete(like);
@@ -124,8 +126,13 @@ public class LikeService {
 
         List<Likes> likes = likeRepository.findByMember(member);
 
+
         List<ContentDailyResponse> likedContents = likes.stream()
-                .map(like -> mapContentToResponse(like.getContent()))
+                .map(like -> {
+                    Content content = like.getContent();
+                    return content != null ? mapContentToResponse(content) : null;
+                })
+                .filter(Objects::nonNull) // 필터링하여 null인 항목은 제외
                 .collect(Collectors.toList());
 
         return likedContents;
@@ -138,7 +145,11 @@ public class LikeService {
         List<Likes> likes = likeRepository.findByMember(member);
 
         List<MenuResponse> likedMenus = likes.stream()
-                .map(like -> mapMenuToResponse(like.getMenu()))
+                .map(like -> {
+                    Menu menu = like.getMenu();
+                    return menu != null ? mapMenuToResponse(menu) : null;
+                })
+                .filter(Objects::nonNull) // 필터링하여 null인 항목은 제외
                 .collect(Collectors.toList());
 
         return likedMenus;
@@ -146,7 +157,7 @@ public class LikeService {
 
 
     private ContentDailyResponse mapContentToResponse(Content content) {
-        return ContentDailyResponse.builder()
+        return ContentResponse.builder()
                 .contentId(content.getId())
                 .name(content.getName())
                 .imgUrl(content.getImgUrl())
