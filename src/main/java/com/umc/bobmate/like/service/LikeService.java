@@ -2,7 +2,7 @@ package com.umc.bobmate.like.service;
 
 import com.umc.bobmate.content.domain.Content;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
-import com.umc.bobmate.content.dto.ContentDailyResponse;
+import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.domain.Likes;
 import com.umc.bobmate.like.domain.repository.LikeRepository;
@@ -10,22 +10,20 @@ import com.umc.bobmate.member.domain.Member;
 import com.umc.bobmate.member.domain.repository.MemberRepository;
 import com.umc.bobmate.menu.domain.Menu;
 import com.umc.bobmate.menu.domain.repository.MenuRepository;
-
 import com.umc.bobmate.menu.dto.MenuResponse;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class LikeService {
-
 
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
@@ -120,14 +118,13 @@ public class LikeService {
         likeRepository.delete(like);
     }
 
-    public List<ContentDailyResponse> getLikedContents(Long memberId) {
+    public List<ContentResponse> getLikedContents(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + memberId));
 
         List<Likes> likes = likeRepository.findByMember(member);
 
-
-        List<ContentDailyResponse> likedContents = likes.stream()
+        List<ContentResponse> likedContents = likes.stream()
                 .map(like -> {
                     Content content = like.getContent();
                     return content != null ? mapContentToResponse(content) : null;
@@ -155,8 +152,7 @@ public class LikeService {
         return likedMenus;
     }
 
-
-    private ContentDailyResponse mapContentToResponse(Content content) {
+    private ContentResponse mapContentToResponse(Content content) {
         return ContentResponse.builder()
                 .contentId(content.getId())
                 .name(content.getName())
@@ -175,4 +171,3 @@ public class LikeService {
     }
 
 }
-

@@ -1,7 +1,7 @@
 package com.umc.bobmate.content.controller;
 
 import com.umc.bobmate.content.domain.Content;
-import com.umc.bobmate.content.dto.ContentDailyResponse;
+import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.content.dto.ContentSpecialResponse;
 import com.umc.bobmate.content.service.ContentService;
 import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
@@ -36,7 +36,7 @@ public class ContentController {
     @GetMapping("/top3")
     @Operation(summary = "영상 best3, 텍스트 best3", description = "파라미터로 받은 section을 확인하여 해당 콘텐츠를 반환합니다.")
     @Parameter(name = "section", description = "section 0이면 영상, 1이면 텍스트")
-    public ApiResponse<List<ContentDailyResponse>> getTop3Contents(@RequestParam(name = "section") int section) {
+    public ApiResponse<List<ContentResponse>> getTop3Contents(@RequestParam(name = "section") int section) {
 
         if (section == 0) { // 0: VIDEO
             return ApiResponse.onSuccess(contentService.getTop3ContentsByLikes(ContentType.VIDEO));
@@ -78,9 +78,9 @@ public class ContentController {
 
     // 일반상황으로 컨텐츠 추천
     @GetMapping("/recommend/daily")
-    public ApiResponse<List<ContentDailyResponse>> recommendContent(@RequestParam String emotion,
-                                                                    @RequestParam String withWhom,
-                                                                    @RequestParam ContentType contentType) {
+    public ApiResponse<List<ContentResponse>> recommendContent(@RequestParam String emotion,
+                                                               @RequestParam String withWhom,
+                                                               @RequestParam ContentType contentType) {
         System.out.println("start checking daily");
 
         // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
@@ -88,8 +88,8 @@ public class ContentController {
             List<Content> recommendedContents = contentService.recommendContents(emotion, withWhom, contentType);
 
             // ContentResponseDTO로 변환
-            List<ContentDailyResponse> contentDailyResponseList = recommendedContents.stream()
-                    .map(content -> ContentDailyResponse.builder()
+            List<ContentResponse> contentDailyResponseList = recommendedContents.stream()
+                    .map(content -> ContentResponse.builder()
                             .contentId(content.getId())
                             .name(content.getName())
                             .imgUrl(content.getImgUrl())

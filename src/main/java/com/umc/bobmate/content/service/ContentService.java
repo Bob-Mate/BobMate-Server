@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.umc.bobmate.content.dto.ContentDailyResponse;
+import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.content.dto.ContentSpecialResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +26,7 @@ public class ContentService {
     private final ContentRepository contentRepository;
     private final CommentRepository commentRepository;
 
-    public List<ContentDailyResponse> getTop3ContentsByLikes(ContentType contentType) {
+    public List<ContentResponse> getTop3ContentsByLikes(ContentType contentType) {
         Pageable pageable = PageRequest.of(0, 3);
         List<Content> top3Contents = contentRepository.findTop3ByOrderByLikesCountDesc(contentType, pageable);
         return top3Contents.stream()
@@ -34,8 +34,8 @@ public class ContentService {
                 .collect(Collectors.toList());
     }
 
-    private ContentDailyResponse mapContentToResponse(Content content) {
-        return ContentDailyResponse.builder()
+    private ContentResponse mapContentToResponse(Content content) {
+        return ContentResponse.builder()
                 .contentId(content.getId())
                 .name(content.getName())
                 .imgUrl(content.getImgUrl())

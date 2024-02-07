@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ContentDailyResponse {
+public class ContentResponse {
     private Long contentId;
     private String name;
     private String imgUrl;

@@ -2,7 +2,7 @@ package com.umc.bobmate.like.controller;
 
 import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
 
-import com.umc.bobmate.content.dto.ContentDailyResponse;
+import com.umc.bobmate.content.dto.ContentResponse;
 import com.umc.bobmate.global.apiPayload.ApiResponse;
 import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.like.service.LikeService;
@@ -30,7 +30,7 @@ public class LikeController {
 
     @GetMapping("/content")
     @Operation(summary = "내가 찜한 콘텐츠", description = "Authorization 헤더 필요", security = @SecurityRequirement(name = "Authorization"))
-    public ApiResponse<List<ContentDailyResponse>> getLikedContents() {
+    public ApiResponse<List<ContentResponse>> getLikedContents() {
         try {
             Long memberId = authTokensGenerator.getLoginMemberId();
             List<ContentResponse> likedContents = likeService.getLikedContents(memberId);
