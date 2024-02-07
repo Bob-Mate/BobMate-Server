@@ -81,7 +81,8 @@ public class ContentService {
                     break;
 
                 case "GLOOMY":
-                    if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ACTION") || content.getGenreList().contains("ANIMATION")) {
+                    if (content.getGenreList().contains("DRAMA") || content.getGenreList().contains("ACTION")
+                            || content.getGenreList().contains("ANIMATION")) {
                         if (recommend.size() < 3) {
                             if (!recommend.contains(content)) recommend.add(content);
                         }
