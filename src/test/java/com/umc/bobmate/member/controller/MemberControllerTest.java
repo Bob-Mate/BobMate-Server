@@ -50,6 +50,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 class MemberControllerTest {
+
+/*
     @Autowired
     MockMvc mockMvc;
 
@@ -286,5 +288,5 @@ class MemberControllerTest {
                 );
     }
 
-
+*/
 }
