@@ -1,6 +1,7 @@
 package com.umc.bobmate.like.domain.repository;
 
 import com.umc.bobmate.content.domain.Content;
+
 import com.umc.bobmate.like.domain.Likes;
 import com.umc.bobmate.member.domain.Member;
 import com.umc.bobmate.menu.domain.Menu;

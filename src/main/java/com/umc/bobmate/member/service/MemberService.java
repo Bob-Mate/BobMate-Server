@@ -3,15 +3,15 @@ package com.umc.bobmate.member.service;
 import com.umc.bobmate.member.domain.Member;
 import com.umc.bobmate.member.domain.repository.MemberRepository;
 import java.util.List;
+import java.util.Optional;
+
 import com.umc.bobmate.comment.domain.Comment;
 import com.umc.bobmate.comment.domain.repository.CommentRepository;
 import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import com.umc.bobmate.global.s3.DirName;
 import com.umc.bobmate.global.s3.S3Service;
 import com.umc.bobmate.login.jwt.util.AuthTokensGenerator;
-import com.umc.bobmate.member.domain.Member;
 import com.umc.bobmate.member.domain.repository.CustomMemberRepository;
-import com.umc.bobmate.member.domain.repository.MemberRepository;
 import com.umc.bobmate.member.dto.request.CommentUploadRequest;
 import com.umc.bobmate.member.dto.request.EditRequest;
 import com.umc.bobmate.member.dto.request.PreferenceUploadRequest;
@@ -89,4 +89,6 @@ public class MemberService {
         }
         loginMember.modifyName(request.getName());
     }
+
+
 }

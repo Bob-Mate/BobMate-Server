@@ -15,7 +15,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
-
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +29,8 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @DynamicInsert
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class Member extends BaseEntity {
 
@@ -97,4 +99,5 @@ public class Member extends BaseEntity {
     public void modifyProfileImage(String imgUrl) {
         this.imageUrl = imgUrl;
     }
+
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/likes")
 @RequiredArgsConstructor
+
 @Tag(name = "나의 찜", description = "사용자가 찜한 콘텐츠/메뉴 조회 API")
 public class LikeController {
     private final LikeService likeService;
@@ -54,3 +55,66 @@ public class LikeController {
     }
 
 }
+
+//    @PostMapping("/api/store/likes")
+//    public ResponseEntity<String> likes(long id, String likes, @AuthenticationPrincipal CustomUserDetails principal) {
+//
+//        if(principal == null) {
+//            return ResponseEntity.badRequest().body("회원만 가능합니다");
+//        }
+//
+//        long userId = member.getId();
+//        storeService.likes(id, likes, userId);
+//        return ResponseEntity.ok().body("완료");
+//    }
+
+    /* 컨텐츠 찜 목록 */
+//    @GetMapping("/like")
+//    public List<LikesRe> findLikePosts(@RequestParam("memberId") String memberId) {
+//        Long l = Long.parseLong(memberId);
+//        // memberId에 해당하는 Member를 찾음
+//        Member member = memberService.findById(l);
+//
+//        if (member != null) {
+//            // LikeHistoryRepository를 통해 해당 Member가 좋아요한 모든 게시물 조회
+//            return likeHistoryService.findByMemberLike(member).stream().map(LikePostDto::new).collect(Collectors.toList());
+//
+//        }
+//        return null;
+//    }
+
+//    @GetMapping("/my/menu")
+//    public ApiResponse<List<Likes>> getMyMenuLikes(@RequestParam Long memberId) {
+//        List<Likes> menuLikes = likeService.findMenuLikesByMemberId(memberId);
+//        return ApiResponse.onSuccess(menuLikes);
+//    }
+//
+//    @GetMapping("/my/menu")
+//    public ApiResponse<List<MenuResponseDTO>> getMyMenuLikes(@RequestParam Long memberId) {
+//        List<Likes> menuLikes = likeService.findMenuLikesByMemberId(memberId);
+//        List<MenuResponseDTO> menuResponseDTOs = menuLikes.stream()
+//                .map(MenuConverter::toMenuResponseDTO)
+//                .toList();
+//        return ApiResponse.onSuccess(menuResponseDTOs, "Menu Likes retrieved successfully");
+//    }
+//
+//    @GetMapping("/my/content")
+//    public ApiResponse<List<Likes>> getMyContentLikes(@RequestParam Long memberId) {
+//        List<Likes> contentLikes = likeService.findContentLikesByMemberId(memberId);
+//        return ApiResponse.onSuccess(contentLikes);
+//    }
+//
+//    @PostMapping("/add")
+//    public ResponseEntity<ApiResponse<Likes>> addLike(@RequestBody Likes like) {
+//        Likes addedLike = likeService.addLike(like);
+//        return ApiResponse.created(addedLike, "Like added successfully");
+//    }
+//
+//    @DeleteMapping("/remove/{likeId}")
+//    public ResponseEntity<ApiResponse<Void>> removeLike(@PathVariable Long likeId) {
+//        likeService.removeLike(likeId);
+//        return ApiResponse.onSuccess(null);
+//    }
+
+
+

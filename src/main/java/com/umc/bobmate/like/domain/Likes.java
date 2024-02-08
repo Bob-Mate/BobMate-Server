@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -24,6 +25,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Getter
 @DynamicInsert
 @NoArgsConstructor
+
 public class Likes extends BaseEntity {
 
     @Id
@@ -61,8 +63,8 @@ public class Likes extends BaseEntity {
         this.menu = menu;
         menu.getLikes().add(this); // Menu 엔티티에 Likes 추가
     }
+}
 
-//
 //
 //    public void like(Content content) {
 ////        this.type = LikeType.LIKE;
@@ -75,7 +77,7 @@ public class Likes extends BaseEntity {
 //        this.menu = menu;
 //        menu.getLikes().add(this);
 //    }
-
+//
 //    public void unlike() {
 //        if (content != null) {
 //            content.getLikes().remove(this);
@@ -98,4 +100,3 @@ public class Likes extends BaseEntity {
 //        }
 //    }
 
-}

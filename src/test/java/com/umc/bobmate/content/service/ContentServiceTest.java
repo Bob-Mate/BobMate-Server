@@ -1,21 +1,10 @@
 package com.umc.bobmate.content.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.umc.bobmate.content.domain.Content;
-import com.umc.bobmate.content.domain.ContentType;
 import com.umc.bobmate.content.domain.repository.ContentRepository;
-import com.umc.bobmate.content.dto.ContentResponse;
-import com.umc.bobmate.like.domain.Likes;
 import com.umc.bobmate.like.domain.repository.LikeRepository;
-import jakarta.transaction.Transactional;
-import java.util.List;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
