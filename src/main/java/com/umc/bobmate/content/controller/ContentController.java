@@ -110,7 +110,6 @@ public class ContentController {
     @GetMapping("/recommend/special/{commentId}")
     public ApiResponse<List<ContentSpecialResponse>> recommendSpecialContent(@PathVariable Long commentId,
                                                                              @RequestParam ContentType type) {
-
         try {
             return ApiResponse.onSuccess(contentService.findContentWithFrequentGenre(commentId, type));
         }
