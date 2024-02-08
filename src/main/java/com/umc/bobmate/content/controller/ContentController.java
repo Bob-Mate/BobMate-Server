@@ -17,12 +17,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import com.umc.bobmate.content.domain.ContentType;
 import com.umc.bobmate.global.apiPayload.ApiResponse;
 
 @RestController
+@Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/contents")
 @RequiredArgsConstructor
@@ -82,6 +84,7 @@ public class ContentController {
                                                                @RequestParam String withWhom,
                                                                @RequestParam ContentType contentType) {
         System.out.println("start checking daily");
+        log.info("Heeju github CICD 체크", " "+emotion);
 
         // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
         try {
