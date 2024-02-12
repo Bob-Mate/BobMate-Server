@@ -40,8 +40,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,7 +50,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 class MemberControllerTest {
 
-/*
     @Autowired
     MockMvc mockMvc;
 
@@ -288,5 +286,26 @@ class MemberControllerTest {
                 );
     }
 
-*/
+    @Test
+    @DisplayName("닉네임 중복 확인")
+    void checkDuplicateName() throws Exception {
+        this.mockMvc.perform(
+                        get("/api/v1/members/duplicate")
+                                .queryParam("name", "지수")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("check-duplicate",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        queryParameters(
+                                parameterWithName("name").description("중복 확인할 이름")
+                        ),
+                        responseFields(
+                                fieldWithPath("isSuccess").type(BOOLEAN).description("성공 여부"),
+                                fieldWithPath("code").type(STRING).description("결과 코드"),
+                                fieldWithPath("message").type(STRING).description("결과 메세지"),
+                                fieldWithPath("result").type(BOOLEAN).description("중복되었는지 여부")
+                        )
+                ));
+    }
 }

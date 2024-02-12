@@ -91,4 +91,7 @@ public class MemberService {
     }
 
 
+    public Boolean checkDuplicate(String name) {
+        return memberRepository.existsByName(name);
+    }
 }

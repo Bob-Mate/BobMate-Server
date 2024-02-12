@@ -11,6 +11,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findBySocialId(String socialId);
 
+    Boolean existsByName(String name);
 
     default void deleteMember(Member member) {
         member.setStatus(DELETED);
