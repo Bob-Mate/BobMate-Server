@@ -18,6 +18,13 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
     @Query("update Evaluation e set e.status = 'DELETED'")
     void deleteByMember(@Param("member") Member loginMember);
 
-    Evaluation findEvaluationByContentId(Long id);
 
+    @Query("SELECT e FROM Evaluation e where e.member.id=:memberId and e.content.id=:contentId")
+    Evaluation findEvaluationByContentIdAndMemberId(@Param("memberId") Long memberId, @Param("contentId") Long contentId);
+
+    //SELECT e.content_id, SUM(e.score) FROM evaluation e
+    // WHERE e.is_good=true GROUP BY e.content_id, e.is_good ORDER BY SUM(e.score) DESC
+    @Query("SELECT DISTINCT e FROM Evaluation e " +
+            "WHERE e.isGood=true and e.score IS NOT NULL GROUP BY e.content.id, e.isGood ORDER BY SUM(e.score) DESC")
+    List<Evaluation> findTopContentSumScore();
 }

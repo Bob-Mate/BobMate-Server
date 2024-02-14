@@ -83,8 +83,6 @@ public class ContentController {
     public ApiResponse<List<ContentResponse>> recommendContent(@RequestParam String emotion,
                                                                @RequestParam String withWhom,
                                                                @RequestParam ContentType contentType) {
-        System.out.println("start checking daily");
-        log.info("Heeju github CICD 체크", " "+emotion);
 
         // 여기서 사용자의 선택에 따른 추천 컨텐츠를 가져오기
         try {
@@ -114,6 +112,18 @@ public class ContentController {
             return ApiResponse.onSuccess(contentService.findContentWithFrequentGenre(commentId, type));
         }
         catch (Exception e) {
+            throw new GeneralException(_BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/recommend/daily/new")
+    public ApiResponse<List<ContentResponse>> giveNewContents(@RequestParam String emotion,
+                                                              @RequestParam String withWhom,
+                                                              @RequestParam ContentType contentType){
+        try{
+            return ApiResponse.onSuccess(contentService.refresh(emotion,withWhom,contentType));
+        }
+        catch(Exception e){
             throw new GeneralException(_BAD_REQUEST);
         }
     }

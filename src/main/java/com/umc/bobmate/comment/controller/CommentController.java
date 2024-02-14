@@ -18,7 +18,6 @@ public class CommentController {
     // 가장 많은 음식+감정의 것을 리턴
     @PostMapping("/make/situation")
     public ApiResponse<List<CommentResponseDTO>> getFrequentCommentResponse() {
-        System.out.println("checking for make comment start");
         try {
             return ApiResponse.onSuccess(commentService.makeTop4SituationFromComments());
         } catch (Exception e) {

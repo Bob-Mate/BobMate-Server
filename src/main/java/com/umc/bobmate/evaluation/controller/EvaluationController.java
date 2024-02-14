@@ -9,6 +9,7 @@ import com.umc.bobmate.global.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus._BAD_REQUEST;
@@ -22,7 +23,6 @@ import static com.umc.bobmate.global.apiPayload.code.status.SuccessStatus._OK;
 public class EvaluationController {
 
     private final EvaluationService evaluationService;
-    private final EvaluationRepository evaluationRepository;
 
     //Evaluation 처리만 하면 되고 그 결과를 Controller에서 처리하기
     @PostMapping("/create")
