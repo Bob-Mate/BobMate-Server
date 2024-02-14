@@ -23,11 +23,7 @@ public class EvaluationService {
 
     public void saveEvaluation(EvaluationRequestDTO dto){
         Long memberId = authTokensGenerator.getLoginMemberId();
-
-        // 평가 엔티티 생성
-        Evaluation evaluation = Evaluation.builder()
-                .isGood(dto.isGood())
-                .build();
+        Evaluation evaluation = Evaluation.builder().build();
 
         // 멤버와 컨텐츠 설정
         Member member = memberRepository.findById(memberId)
@@ -35,27 +31,69 @@ public class EvaluationService {
         Content content = contentRepository.findById(dto.getContentId())
                 .orElseThrow(() -> new EntityNotFoundException("Content not found with id: " + dto.getContentId()));
 
-        evaluation.setMember(member);
-        evaluation.setContent(content);
+        Evaluation previousEvaluation = evaluationRepository.findEvaluationByContentIdAndMemberId(memberId, dto.getContentId());
+        if (previousEvaluation != null) {
+            // do noting
+        }
 
-        // 평가 저장
-        evaluationRepository.save(evaluation);
+        else {
+            if (dto.isGood()==true){
+                evaluation.setMember(member);
+                evaluation.setContent(content);
+                evaluation.setGood(dto.isGood());
+                evaluation.setScore(1L);
+                evaluationRepository.save(evaluation);
+
+            } else{
+                evaluation.setMember(member);
+                evaluation.setContent(content);
+                evaluation.setGood(dto.isGood());
+                evaluation.setScore(0L);
+                evaluationRepository.save(evaluation);
+            }
+        }
     }
 
-
     public void updateEvaluation(Long id, EvaluationRequestDTO dto) {
+        Long memberId = authTokensGenerator.getLoginMemberId();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + memberId));
+        Content content = contentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Content not found with id: " + dto.getContentId()));
 
-        Evaluation target = evaluationRepository.findEvaluationByContentId(id);
-        if (target != null) {
-            target.setGood(dto.isGood());
-            target.setContent(contentRepository.findById(dto.getContentId()).orElseThrow());
+        Evaluation target = evaluationRepository.findEvaluationByContentIdAndMemberId(memberId, dto.getContentId());
+        Long contentId = evaluationRepository.findEvaluationByContentIdAndMemberId(memberId, id).getContent().getId();
+        System.out.println("id와 content 비교"+ id + " "+ contentId);
+        if (target != null && id.equals(dto.getContentId())) {
+            boolean currentGood = dto.isGood(); // 현재의 isGood() 값을 저장합니다.
+
+            if (currentGood==true) {
+                target.setGood(currentGood); // 현재 값으로 isGood()을 수정합니다.
+                target.setContent(content);
+                target.setMember(member);
+                target.setScore(1L);
+            }
+
+            else {
+                target.setGood(currentGood); // 현재 값으로 isGood()을 수정합니다.
+                target.setContent(content);
+                target.setMember(member);
+                target.setScore(0L);
+            }
+
+            evaluationRepository.save(target);
         }
-        evaluationRepository.save(target);
     }
 
     public void deleteEvaluationById(Long id) {
-        Evaluation e = evaluationRepository.findEvaluationByContentId(id);
-        evaluationRepository.delete(e);
+        Long memberId = authTokensGenerator.getLoginMemberId();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + memberId));
+        Content content = contentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Content not found with id: " + id));
+
+        Evaluation target = evaluationRepository.findEvaluationByContentIdAndMemberId(memberId, content.getId());
+        evaluationRepository.delete(target);
     }
 
 }
