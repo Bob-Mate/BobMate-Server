@@ -33,8 +33,9 @@ endif::[]
 | The requested resource did not exist
 |===
 
-= Member
+
 == `GET` 선호도 조회 API
+
 === Request
 
 include::{snippets}/get-preferences/http-request.adoc[]
@@ -145,3 +146,20 @@ include::{snippets}/modify-comment/response-body.adoc[]
 
 - response fields
 include::{snippets}/modify-comment/response-fields.adoc[]
+
+== `GET` 닉네임 중복 체크
+
+=== Request
+
+include::{snippets}/check-duplicate/http-request.adoc[]
+
+- query parameters
+include::{snippets}/check-duplicate/query-parameters.adoc[]
+
+=== Response
+
+- response body
+include::{snippets}/check-duplicate/response-body.adoc[]
+
+- response fields
+include::{snippets}/check-duplicate/response-fields.adoc[]

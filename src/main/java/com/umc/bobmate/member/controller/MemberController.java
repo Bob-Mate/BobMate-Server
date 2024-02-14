@@ -29,6 +29,13 @@ public class MemberController {
         return ApiResponse.onSuccess(memberService.getEditPage());
     }
 
+    @GetMapping("/api/v1/members/duplicate")
+    public ApiResponse<Boolean> checkDuplicate(
+            @RequestParam("name") String name
+    ) {
+        return ApiResponse.onSuccess(memberService.checkDuplicate(name));
+    }
+
     @PostMapping(value = "/api/v1/members/edit", consumes = {APPLICATION_JSON_VALUE, MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<Void> getEditPage(
             @RequestPart("profileImage") MultipartFile multipartFile,
