@@ -92,7 +92,7 @@ public class EvaluationService {
         Content content = contentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Content not found with id: " + id));
 
-        Evaluation target = evaluationRepository.findEvaluationByContentIdAndMemberId(memberId, content.getId());
+        Evaluation target = evaluationRepository.findEvaluationByContentIdAndMemberId(memberId, id);
         evaluationRepository.delete(target);
     }
 
