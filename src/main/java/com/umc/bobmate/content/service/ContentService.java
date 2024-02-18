@@ -137,7 +137,7 @@ public class ContentService {
         for (Evaluation e : goodContents){
             System.out.println(e.getContent().getName()+" score is "+e.getScore());
             if (e.getContent().getGenreList().contains(sGenre)
-                    && listContent.size()<=1 && e.getContent().getType()==type) listContent.add(e.getContent());
+                    && listContent.size()<1 && e.getContent().getType()==type) listContent.add(e.getContent());
         }
 
         // 새로고침하면 비추천한것도 반영

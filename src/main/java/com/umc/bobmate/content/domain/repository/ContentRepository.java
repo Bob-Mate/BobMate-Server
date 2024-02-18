@@ -29,7 +29,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 //    @Query("SELECT c FROM Content c " +
 //        "LEFT JOIN Evaluation e ON c.id = e.content.id WHERE (c.type=:type AND e.isGood = false and e.status='ACTIVE')")
     @Query("SELECT c FROM Content c " +
-            "LEFT JOIN Evaluation e ON c.id = e.content.id WHERE (e.member.id=:id and c.type=:type AND e.isGood = false)")
+            "LEFT JOIN Evaluation e ON c.id = e.content.id WHERE (e.member.id=:id and c.type=:type AND e.isGood = false AND e.status='ACTIVE')")
     //@Query("SELECT e From Evaluation e WHERE e.member.id=:id And e.content.type=:type")
     List<Content> findBadEvaluation(@Param("id") Long id, @Param("type") ContentType type);
 
