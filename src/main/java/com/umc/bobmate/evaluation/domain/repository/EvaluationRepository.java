@@ -19,7 +19,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
     void deleteByMember(@Param("member") Member loginMember);
 
 
-    @Query("SELECT e FROM Evaluation e where (e.member.id=:memberId and e.content.id=:contentId)")
+    @Query("SELECT e FROM Evaluation e where (e.member.id=:memberId and e.content.id=:contentId and e.status='ACTIVE')")
     Evaluation findEvaluationByContentIdAndMemberId(@Param("memberId") Long memberId, @Param("contentId") Long contentId);
 
     //SELECT e.content_id, SUM(e.score) FROM evaluation e
