@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
-import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus.EXPIRED_TOKEN;
+import static com.umc.bobmate.global.apiPayload.code.status.ErrorStatus.*;
 
 @Component
 public class JwtTokenProvider {
@@ -47,6 +47,8 @@ public class JwtTokenProvider {
                     .getBody();
         } catch (ExpiredJwtException e) {
             throw new GeneralException(EXPIRED_TOKEN);
+        } catch (Exception e) {
+            throw new GeneralException(_UNAUTHORIZED);
         }
     }
 }
