@@ -1,18 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.3a9c77c0.css",
-    "main.js": "/static/js/main.d42b9c91.js",
+    "main.css": "/static/css/main.9830a97e.css",
+    "main.js": "/static/js/main.d94e720c.js",
     "static/media/Pretendard-Bold.woff": "/static/media/Pretendard-Bold.1f1dbbbf311ffffcc770.woff",
     "static/media/Pretendard-SemiBold.woff": "/static/media/Pretendard-SemiBold.9f6b39f88e7e6a3fd0b2.woff",
     "static/media/Pretendard-Medium.woff": "/static/media/Pretendard-Medium.edd5e28caa1cc4a9e0b7.woff",
     "static/media/Pretendard-Regular.woff": "/static/media/Pretendard-Regular.303253288b0ba99db532.woff",
     "static/media/Cafe24Ssurround-v2.0.woff": "/static/media/Cafe24Ssurround-v2.0.57c1097faa8743dc962f.woff",
+    "static/media/family-image.png": "/static/media/family-image.246ecd6fb0fc03b71619.png",
     "index.html": "/index.html",
-    "main.3a9c77c0.css.map": "/static/css/main.3a9c77c0.css.map",
-    "main.d42b9c91.js.map": "/static/js/main.d42b9c91.js.map"
+    "main.9830a97e.css.map": "/static/css/main.9830a97e.css.map",
+    "main.d94e720c.js.map": "/static/js/main.d94e720c.js.map"
   },
   "entrypoints": [
-    "static/css/main.3a9c77c0.css",
-    "static/js/main.d42b9c91.js"
+    "static/css/main.9830a97e.css",
+    "static/js/main.d94e720c.js"
   ]
 }
